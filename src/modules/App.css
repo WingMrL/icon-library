@@ -1,0 +1,10 @@
+.custom-ant-layout-header {
+    background: rgba(15,30,79,1);
+    height: 100px;
+    line-height: 100px;
+}
+
+.custom-ant-layout-content {
+    background: rgba(247,247,247,1);
+}
+

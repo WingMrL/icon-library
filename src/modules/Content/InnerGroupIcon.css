@@ -1,0 +1,7 @@
+.icon-container {
+    display: flex;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+    margin-top: 4px;
+    width: 1100px;
+}

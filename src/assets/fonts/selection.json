@@ -1,0 +1,76 @@
+{
+  "IcoMoonType": "selection",
+  "icons": [
+    {
+      "icon": {
+        "paths": [
+          "M832 1024h-640c-35.346 0-64-28.654-64-64v-0c0-35.346 28.654-64 64-64h640c35.346 0 64 28.654 64 64v0c0 35.346-28.654 64-64 64z",
+          "M828.118 352h-0c-18.003 0-35.27 7.152-48 19.882l-204.118 204.118v-512c0-35.346-28.654-64-64-64s-64.001 28.654-64.001 64v512l-204.118-204.118c-12.73-12.73-29.997-19.882-48-19.882h-0c-37.49 0-67.882 30.392-67.882 67.882v0c0 18.003 7.152 35.27 19.882 48l332.118 332.118c8.837 8.837 20.418 13.255 32 13.255s23.164-4.418 32-13.255h0l332.118-332.118c12.73-12.73 19.882-29.996 19.882-48v-0c0-37.49-30.392-67.882-67.882-67.882z"
+        ],
+        "attrs": [
+          {},
+          {}
+        ],
+        "isMulticolor": false,
+        "isMulticolor2": false,
+        "grid": 16,
+        "tags": [
+          "download"
+        ],
+        "colorPermutations": {
+          "1107214214124419186125525525513524211": [
+            {},
+            {}
+          ]
+        }
+      },
+      "attrs": [
+        {},
+        {}
+      ],
+      "properties": {
+        "order": 2,
+        "id": 1,
+        "name": "download",
+        "prevSize": 32,
+        "code": 59648
+      },
+      "setIdx": 0,
+      "setId": 2,
+      "iconIdx": 0
+    }
+  ],
+  "height": 1024,
+  "metadata": {
+    "name": "icomoon"
+  },
+  "preferences": {
+    "showGlyphs": true,
+    "showQuickUse": true,
+    "showQuickUse2": true,
+    "showSVGs": true,
+    "fontPref": {
+      "prefix": "icon-",
+      "metadata": {
+        "fontFamily": "icomoon"
+      },
+      "metrics": {
+        "emSize": 1024,
+        "baseline": 6.25,
+        "whitespace": 50
+      },
+      "embed": false
+    },
+    "imagePref": {
+      "prefix": "icon-",
+      "png": true,
+      "useClassSelector": true,
+      "color": 0,
+      "bgColor": 16777215,
+      "classSelector": ".icon"
+    },
+    "historySize": 50,
+    "showCodes": true,
+    "gridSize": 16
+  }
+}

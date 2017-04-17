@@ -1,0 +1,54 @@
+import mongoose from 'mongoose';
+const Schema = mongoose.Schema
+const ObjectId = Schema.Types.ObjectId
+
+let IconSchema = new Schema({
+  iconName: String,
+  iconUrl: String,
+  labels: [{
+    type: ObjectId,
+    ref: 'Label'
+  }],
+  groups: [{
+    type: ObjectId,
+    ref: 'Group'
+  }],
+  meta: {
+    createAt: {
+      type: Date,
+      default: Date.now()
+    },
+    updateAt: {
+      type: Date,
+      default: Date.now()
+    }
+  }
+})
+
+// var ObjectId = mongoose.Schema.Types.ObjectId
+IconSchema.pre('save', function(next) {
+  if (this.isNew) {
+    this.meta.createAt = this.meta.updateAt = Date.now()
+  }
+  else {
+    this.meta.updateAt = Date.now()
+  }
+
+  next()
+})
+
+IconSchema.statics = {
+  fetch: function(cb) {
+    return this
+      .find({})
+      .sort('meta.updateAt')
+      .exec(cb)
+  },
+  findById: function(id, cb) {
+    return this
+      .findOne({_id: id})
+      .exec(cb)
+  }
+}
+
+export default IconSchema;
