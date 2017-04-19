@@ -6,6 +6,7 @@ import querystring from 'querystring';
 const Option = Select.Option;
 
 import styles from './SearchBar.less';
+import { Link } from 'react-router-dom';
 
 let timeout;
 let currentValue;
@@ -73,7 +74,9 @@ class SearchBar extends React.Component {
                     >
                     {options}
                 </Select>
-                <Icon type="search" className={"custom-search-bar-search-icon"}/>
+                <Link to="/searchresult" className={"custom-search-bar-search-link"}>
+                    <Icon type="search" className={"custom-search-bar-search-icon"}/>
+                </Link>
             </div>
         );
     }

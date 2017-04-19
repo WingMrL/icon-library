@@ -3,9 +3,9 @@ import React from 'react';
 import { Button } from 'antd';
 
 import '../../assets/style.less';
-import styles from './DownloadBtn.css';
+import styles from './OpenFileLocation.css';
 
-class DownloadBtn extends React.Component {
+class OpenFileLocation extends React.Component {
     render() {
         return (
             <Button style={{
@@ -16,14 +16,14 @@ class DownloadBtn extends React.Component {
                 "fontWeight": "400",
                 "boxSizing": "border-box",
                 "border": "0",
-                "marginRight": "16px",
+                "marginRight": "28px",
                 "backgroundColor": "transparent",
             }} className={styles["btn"]}>
-                <span className={"icon-download " + styles["icon"]}></span>
-                <span>下载 </span>
+                <span className={"icon-location " + styles["icon"]}></span>
+                打开文件位置
             </Button>
         );
     }
 }
 
-export default DownloadBtn;
+export default OpenFileLocation;

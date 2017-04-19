@@ -2,7 +2,6 @@ import React from 'react';
 
 import { Checkbox } from 'antd';
 
-import styles from './SelectAll.css';
 import './SelectAll.less';
 
 class SelectAll extends React.Component {
@@ -24,11 +23,11 @@ class SelectAll extends React.Component {
     }
 
     render() {
-        const checkTitle = this.state.checkFlag ? '取消全选' : '全 选';
+        const checkTitle = this.state.checkFlag ? '取消全选' : '全选';
         return (
-            <div className={styles["checkbox-container"]}>
+            <div className={`select-all-checkbox-container`}>
                 {checkTitle}
-                <Checkbox onChange={this.handleCheckboxChecked} className={styles['checkbox'] + " select-all-checkbox"}/>
+                <Checkbox onChange={this.handleCheckboxChecked} className={`s-a-checkbox select-all-checkbox`}/>
             </div>
         );
     }
