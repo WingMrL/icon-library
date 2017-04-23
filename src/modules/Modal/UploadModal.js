@@ -5,6 +5,8 @@ import UploadIconPreview from '../Content/UploadIconPreview';
 import AddFile from '../Content/AddFile';
 import { Modal, Button, message } from 'antd';
 import CheckableTag from '../Content/CheckableTag';
+import config from '../../../config/config';
+import axios from 'axios';
 
 class UploadModal extends React.Component {
 
@@ -15,9 +17,26 @@ class UploadModal extends React.Component {
             fileList: [],
             selectIndex: -1,
             nameInputValue: '',
+            icons: [],
         };
         this.errorUploadCount = 0;
     }
+
+    
+    componentWillMount() {
+        let self = this;
+        axios.get(`${config.serverHost}/api/getIcons`)
+            .then((res) => {
+                if(res.status == 200 && res.data.code == 0) {
+                    self.setState({
+                        icons: res.data.icons
+                    })
+                }
+            }).catch((res) => {
+
+            });
+    }
+    
     
     handleCancel = () => {
         this.props.onCancel();
