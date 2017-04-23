@@ -38,7 +38,6 @@ class MoreMenu extends React.Component {
     }
 
     render() {
-        console.log(this.state.deleteModalVisible, 1234);
         return (
             <div>
                 <Menu

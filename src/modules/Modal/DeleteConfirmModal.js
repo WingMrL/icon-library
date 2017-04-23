@@ -20,7 +20,6 @@ class DeleteConfirmModal extends React.Component {
     }
 
     render() {
-        console.log(this.props.visible);
         return (
             <Modal 
                 title="删除文件"

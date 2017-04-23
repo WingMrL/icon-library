@@ -21,7 +21,7 @@ class Group extends React.Component {
                             <li></li>
                         </ul>
                     </div>
-                    <div className={styles["group-name-div"]}>EasiNote5</div>
+                    <div className={styles["group-name-div"]}>{this.props.groupName}</div>
                 {/*</div>*/}
             </Link>
         );

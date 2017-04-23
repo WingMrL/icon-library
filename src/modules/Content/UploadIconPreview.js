@@ -1,35 +1,22 @@
 import React from 'react';
 
 import './UploadIconPreview.less';
-import bg from '../../assets/images/menu/Logo_en5.png';
-
-const iconStyle = {
-    backgroundImage: `url(${bg})`
-};
 
 class UploadIconPreview extends React.Component {
 
     constructor(props) {
         super(props);
         this.state = {
-            checked: false,
             mouseEnter: false,
         };
 
-        this.handleCheck = this.handleCheck.bind(this);
-        this.handleMouseToggle = this.handleMouseToggle.bind(this);
-        this.downloadLinkOnClick = this.downloadLinkOnClick.bind(this);
     }
 
-    handleCheck(e) {
-        this.setState((prevState) => {
-            return {
-                checked: !prevState.checked
-            }
-        })
+    handleCheck = (e) => {
+        this.props.setSelectedIndex(this.props.index);
     }
 
-    handleMouseToggle(e) {
+    handleMouseToggle = (e) => {
         this.setState((prevState) => {
             return {
                 mouseEnter: !prevState.mouseEnter
@@ -37,16 +24,21 @@ class UploadIconPreview extends React.Component {
         });
     }
 
-    downloadLinkOnClick(e) {
+    deleteLinkOnClick = (e) => {
         e.preventDefault();
         e.stopPropagation();
-        console.log('开始下载....');
+        console.log('删除....',this.props.index);
+        this.props.onDelete(this.props.index);
     }
 
     render() {
-        let style = Object.assign({}, iconStyle, {
-            border: this.state.checked ? "1px solid #0d9be4" : "0"
-        });
+        let style = {
+            backgroundImage: `url(${this.props.base64Data})`,
+            border: this.props.index == this.props.selectIndex ? "1px solid #0d9be4" : "0"
+        };
+        if(this.props.width > 100 || this.props.height > 100) {
+            style.backgroundSize = "contain";
+        }
         return (
             <li className={`custom-upload-icon-container`}>
                 <div className={`icon-container`} 
@@ -55,8 +47,8 @@ class UploadIconPreview extends React.Component {
                     onMouseOver={this.handleMouseToggle}
                     onMouseOut={this.handleMouseToggle}
                     >
-                    <a className={`download-link`} onClick={this.downloadLinkOnClick}>
-                        <span className={`icon-download`}></span>
+                    <a className={`delete-link`} onClick={this.deleteLinkOnClick}>
+                        <span className={`icon-delete`}></span>
                     </a>
                 </div>
             </li>

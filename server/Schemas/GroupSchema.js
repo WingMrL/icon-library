@@ -1,4 +1,4 @@
-import mongoose from 'mongoose';
+let mongoose = require('mongoose');
 const Schema = mongoose.Schema
 const ObjectId = Schema.Types.ObjectId
 
@@ -47,4 +47,4 @@ GroupSchema.statics = {
   }
 }
 
-export default GroupSchema;
+module.exports = GroupSchema;

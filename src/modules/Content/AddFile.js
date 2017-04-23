@@ -1,6 +1,12 @@
 import React from 'react';
 
+import axios from 'axios';
+
 import './AddFile.less';
+import { Upload, message } from 'antd';
+import config from '../../../config/config';
+
+import defaultRequest from '../../utils/request';
 
 class AddFile extends React.Component {
 
@@ -8,11 +14,60 @@ class AddFile extends React.Component {
         super(props);
     }
 
+
+
+    handleBeforeUpload = (file, fileList) => {
+        let self = this;
+        this.props.beforeUpload(file, fileList);
+
+        return new Promise((resolve, rejected) => {
+            let timer = setInterval(() => {
+                if(self.props.uploadFlag) {
+                    resolve();
+                    console.log('promist then 开始上传....');
+                    clearInterval(timer);
+                    timer = null;
+                }
+            }, 500);
+        });
+    };
+
+    handleChange = (info) => {
+        if (info.file.status === 'done') {
+            message.success(`${info.file.name} 上传成功！`);
+            this.props.removeUploadSuccessFile(info.file.uid, info.file.status);
+        } else if (info.file.status === 'error') {
+            message.error(`${info.file.name} 上传失败！`);
+            this.props.removeUploadSuccessFile(info.file.uid, info.file.status);
+        }
+        
+    }
+
+    handleCustomRequest = (obj) => {
+
+        this.props.fileList.forEach((value) => {
+            if(value.uid == obj.file.uid) {
+                defaultRequest(obj);
+            }
+        })
+    }
+
     render() {
         return (
-            <li className={`custom-file-upload-container`}>
-
-            </li>
+            <Upload
+                showUploadList={false}
+                name="icon"
+                action={`${config.serverHost}/api/uploadIcon`}
+                className={`custom-file-upload-container`}
+                onChange={this.handleChange}
+                beforeUpload={this.handleBeforeUpload}
+                multiple
+                customRequest={this.handleCustomRequest}
+                accept={`.png, .jpg, .svg, .jpeg`}
+                >
+                <li className={`upload`}>
+                </li>
+            </Upload>
         );
     }
 }

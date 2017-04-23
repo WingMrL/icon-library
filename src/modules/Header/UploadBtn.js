@@ -7,22 +7,22 @@ class UploadBtn extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            uplodaModalVisible: false
+            modalKey: Date.now().toString(),
+            uplodaModalVisible: false,
         };
 
-        this.onClick = this.onClick.bind(this);
-        this.onCancel = this.onCancel.bind(this);
     }
 
-    onClick() {
+    onClick = () => {
         this.setState({
             uplodaModalVisible: true
         });
     }
 
-    onCancel() {
+    onCancel = () => {
         this.setState({
-            uplodaModalVisible: false
+            uplodaModalVisible: false,
+            modalKey: Date.now().toString()
         });
     }
 
@@ -47,6 +47,7 @@ class UploadBtn extends React.Component {
                 <UploadModal 
                     visible={this.state.uplodaModalVisible}
                     onCancel={this.onCancel}
+                    key={this.state.modalKey}
                     />
             </div>
         );
