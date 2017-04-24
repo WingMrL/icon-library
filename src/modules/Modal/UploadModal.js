@@ -16,7 +16,7 @@ class UploadModal extends React.Component {
         this.state = {
             uploadFlag: false, //全beforeUpload的promise的resolve等到“全部上传”的时候才执行
             fileList: [],
-            selectIndex: -1,
+            selectIndex: -1, //预览图片区，当前选中图片的索引
             nameInputValue: '',
             labels: ["Camera",
                     "SeewoOS",
@@ -28,7 +28,7 @@ class UploadModal extends React.Component {
                     "VR",
                     "TV",
                     ],
-            selectedLabels: ['Camera', 'SeewoOS'],
+            selectedLabels: [],
             labelInputEditable: false,
         };
         this.errorUploadCount = 0;
@@ -48,6 +48,28 @@ class UploadModal extends React.Component {
 
             });
     }
+
+    componentDidUpdate(prevProps, prevState) {
+        if(prevState.selectedLabels.length != this.state.selectedLabels.length) {
+            const index = this.state.selectIndex;
+            if(index > -1) {
+                let fileList = [...this.state.fileList];
+                fileList[index].labels = [...this.state.selectedLabels];
+                this.setState({
+                    fileList
+                });
+            }
+        }
+        if(prevState.selectIndex != this.state.selectIndex) {
+            let index = this.state.selectIndex;
+            if(index > -1) {
+                let selectedLabels = [...this.state.fileList[index].labels];
+                this.setState({
+                    selectedLabels
+                });
+            }
+        }
+    }
     
     
     handleCancel = () => {
@@ -59,6 +81,10 @@ class UploadModal extends React.Component {
         this.setState({
             uploadFlag: true
         });
+    }
+
+    setLabelsOfFile = () => {
+
     }
 
     setUploadFlag = (flag) => {
@@ -293,13 +319,12 @@ class UploadModal extends React.Component {
                         beforeUpload={this.handleBeforeUpload} 
                         uploadFlag={this.state.uploadFlag}
                         fileList={this.state.fileList}
-                        setUploadFlag={this.setUploadFlag}
                         removeUploadSuccessFile={this.removeUploadSuccessFile}
                         />
                 </ul>
                 <span className={`split`}></span>
                 {
-                    this.state.selectIndex > -2 
+                    this.state.selectIndex > -1
                     ?
                     <div className={`edit-container`}>
                         <div className={`icon-name-container`}>
