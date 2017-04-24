@@ -10,15 +10,32 @@ class CheckableTag extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            checked: false
+            checked: this.props.checked
         }
-        this.handleChange = this.handleChange.bind(this);
     }
 
-    handleChange(checked) {
+    handleChange = (checked) => {
         this.setState({
             checked
         })
+    }
+
+    componentWillReceiveProps(nextProps) {
+        if(nextProps.checked != this.state.checked) {
+            this.setState({
+                checked: nextProps.checked
+            });
+        }
+    }
+    
+
+    componentDidUpdate(prevProps, prevState) {
+        if(prevState.checked != this.state.checked) {
+            this.props.onChange(
+                    this.state.checked, 
+                    this.props.children
+                    );
+        }
     }
 
     render() {

@@ -7,6 +7,7 @@ import { Modal, Button, message } from 'antd';
 import CheckableTag from '../Content/CheckableTag';
 import config from '../../../config/config';
 import axios from 'axios';
+import ClosableTag from '../Content/ClosableTag';
 
 class UploadModal extends React.Component {
 
@@ -17,7 +18,18 @@ class UploadModal extends React.Component {
             fileList: [],
             selectIndex: -1,
             nameInputValue: '',
-            icons: [],
+            labels: ["Camera",
+                    "SeewoOS",
+                    "EasiNote5",
+                    "汽车电子",
+                    "Note",
+                    "军队项目",
+                    "希沃信鸽",
+                    "VR",
+                    "TV",
+                    ],
+            selectedLabels: ['Camera', 'SeewoOS'],
+            labelInputEditable: false,
         };
         this.errorUploadCount = 0;
     }
@@ -25,12 +37,12 @@ class UploadModal extends React.Component {
     
     componentWillMount() {
         let self = this;
-        axios.get(`${config.serverHost}/api/getIcons`)
+        axios.get(`${config.serverHost}/api/getLabels`)
             .then((res) => {
                 if(res.status == 200 && res.data.code == 0) {
-                    self.setState({
-                        icons: res.data.icons
-                    })
+                    // self.setState({
+                    //     labels: res.data.labels
+                    // })
                 }
             }).catch((res) => {
 
@@ -149,24 +161,117 @@ class UploadModal extends React.Component {
         }
     }
 
-    render() {
-        console.log(this.state.fileList);
+    // 输入标签时， 按“回车”的事件处理
+    handleLabelInputKeyUp = (e) => {
+        if(e.key == 'Enter') {
+            // console.log(e.target.value);
+            // debugger;
+            let value = e.target.value;
+            this.labelInput.blur();
+            this.labelInput.value = '';
+            this.setState({
+                labelInputEditable: false
+            });
+            if(value == '' || this.state.selectedLabels.indexOf(value) > -1) {
+                return;
+            }
+            let selectedLabels = [...this.state.selectedLabels, value];
+            this.setState({
+                selectedLabels
+            });
+        }
+    }
 
+    closableTagOnClose = (e, index) => {
+        // console.log(e);
+        e.stopPropagation();
+        let selectedLabels = [...this.state.selectedLabels.slice(0, index)
+                                , ...this.state.selectedLabels.slice(index + 1)];
+        // debugger;
+        this.setState({
+            selectedLabels
+        });
+        
+    }
+
+    handleLabelContainerClick = (e) => {
+        this.labelInput.focus();
+        this.setState({
+            labelInputEditable: true
+        })
+    }
+
+    handleCheckableTagChange = (checked, labelName) => {
+        const name = labelName.trim();
+        let selectedLabels;
+        let index = this.state.selectedLabels.indexOf(labelName);
+        if(checked) {
+            if(index > -1) {
+                return;
+            }
+            selectedLabels = [...this.state.selectedLabels, name];
+        } else {
+            if(index < 0) {
+                return;
+            }
+            selectedLabels = [...this.state.selectedLabels.slice(0, index)
+                                , ...this.state.selectedLabels.slice(index + 1)];
+        }
+        // debugger;
+        this.setState({
+            selectedLabels,
+            labelInputEditable: false
+        });
+    }
+
+    render() {
+        // console.log(this.state.fileList);
+        
         // 文件名 input
         let nameInputValue = this.state.nameInputValue.replace(/\.(png|jpg|svg|jpeg)$/i, '');
-        const uploadIconPreviewList = this.state.fileList.map((value, index) => {
-                return <UploadIconPreview 
-                            key={value.uid} 
-                            index={index}
-                            base64Data={value.base64Data} 
-                            name={value.name} 
-                            width={value.width}
-                            height={value.height}
-                            onDelete={this.handleIconPreviewOnDelete}
-                            selectIndex={this.state.selectIndex}
-                            setSelectedIndex={this.setSelectedIndex}
-                            />
-            });        
+        let uploadIconPreviewList = this.state.fileList.map((value, index) => {
+            return <UploadIconPreview 
+                        key={value.uid} 
+                        index={index}
+                        base64Data={value.base64Data} 
+                        name={value.name} 
+                        width={value.width}
+                        height={value.height}
+                        onDelete={this.handleIconPreviewOnDelete}
+                        selectIndex={this.state.selectIndex}
+                        setSelectedIndex={this.setSelectedIndex}
+                        />
+        });
+
+        
+        let labelInputTags = this.state.selectedLabels.map((value, index) => {
+            return <ClosableTag
+                        key={`no.${value}`}
+                        onClose={this.closableTagOnClose}
+                        index={index}
+                        >
+                        {value}
+                    </ClosableTag>
+        }) ;
+        // console.log(labelInputTags);
+
+        let checkableLabels = this.state.labels.map((value, index) => {
+            return  <CheckableTag
+                        key={`no.${index}`}
+                        onChange={this.handleCheckableTagChange}
+                        checked={this.state.selectedLabels.indexOf(value) > -1}
+                        >
+                        {value}
+                    </CheckableTag>
+        });
+
+        // console.log(this.state.labelInputEditable,this.state.selectedLabels.length == 0);
+        let labelInputPlaceHolder = (this.state.labelInputEditable 
+                                    || this.state.selectedLabels.length == 0) ? '选择以下标签，或手动输入按回车确定' : '';
+
+        let  labelContainerStyle = {
+            display: this.state.labelInputEditable ? 'none' : 'block'
+        };
         return (
             <Modal 
                 title="上传文件"
@@ -194,7 +299,7 @@ class UploadModal extends React.Component {
                 </ul>
                 <span className={`split`}></span>
                 {
-                    this.state.selectIndex > -1 
+                    this.state.selectIndex > -2 
                     ?
                     <div className={`edit-container`}>
                         <div className={`icon-name-container`}>
@@ -213,25 +318,24 @@ class UploadModal extends React.Component {
                                 <label className={`label-text`}>标签：
                                     <span className={`not-must-input`}>(非必填)</span>
                                 </label>
-                                
                             </div>
-                            <input type="text" className={`input`} placeholder="选择以下标签，或手动输入按回车确定"/>
-                            <div className={`input-label-container`}>
-                                
+                            <input 
+                                ref={ref => this.labelInput = ref}
+                                type="text" 
+                                className={`input`} 
+                                placeholder={labelInputPlaceHolder}
+                                onKeyUp={this.handleLabelInputKeyUp}
+                                />
+                            <div 
+                                className={`input-label-container`}
+                                style={labelContainerStyle}
+                                onClick={this.handleLabelContainerClick}
+                                >
+                                {labelInputTags}
                             </div>
                         </div>
                         <div className={`labels-container`}>
-                            <CheckableTag> Camera </CheckableTag>
-                            <CheckableTag> SeewoOS </CheckableTag>
-                            <CheckableTag> EasiNote5 </CheckableTag>
-                            <CheckableTag> 希沃信鸽 </CheckableTag>
-                            <CheckableTag> 汽车电子 </CheckableTag>
-                            <CheckableTag> 军队项目 </CheckableTag>
-                            <CheckableTag> Note </CheckableTag>
-                            <CheckableTag> 军队项目 </CheckableTag>
-                            <CheckableTag> 希沃信鸽 </CheckableTag>
-                            <CheckableTag> VR </CheckableTag>
-                            <CheckableTag> TV </CheckableTag>
+                            {checkableLabels}
                         </div>
                     </div>
                     :

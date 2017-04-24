@@ -106,6 +106,7 @@
                     display: flex;
                     margin-top: 25px;
                     overflow: visible;
+                    position: relative;
 
                     .label-text-container {
                         width: 48px;
@@ -140,6 +141,20 @@
                         color: #666;
                         padding: 0 15px;
                     }
+
+                    .input-label-container {
+                        background-color: rgba(0, 0, 0, 0);
+                        height: 38px;
+                        width: 312px - 2px;
+                        position: absolute;
+                        left: 9px + 48px + 1px;
+                        cursor: text;
+                        overflow-x: scroll;
+                    }
+
+                    .input-label-container::-webkit-scrollbar {
+                        display: none;
+                    }
                 }
 
                 .labels-container {
@@ -149,6 +164,7 @@
                     padding-left: 58px;
                     overflow-y: scroll;
                 }
+                
             }
         }
 
