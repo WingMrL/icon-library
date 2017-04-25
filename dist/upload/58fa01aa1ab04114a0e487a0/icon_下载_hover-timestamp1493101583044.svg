@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="16px" height="16px" viewBox="0 0 16 16" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 43.1 (39012) - http://www.bohemiancoding.com/sketch -->
+    <title>icon_下载_hover</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Symbols" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="icon_下载_hover" fill="#0D9BE4">
+            <g>
+                <rect id="Rectangle-17" x="2" y="13" width="12" height="2" rx="1"></rect>
+                <rect id="Rectangle-18" x="7" y="1" width="2" height="11" rx="1"></rect>
+                <path d="M7.98554611,12.8045098 C8.25038068,12.812258 8.51712666,12.7145769 8.71919592,12.5125076 L12.9660366,8.26566694 C13.3506984,7.88100522 13.3544609,7.24407768 12.9639366,6.85355339 C12.5706897,6.46030644 11.9411876,6.46208889 11.5518231,6.85145338 L7.98554611,10.4177303 L4.41926916,6.85145338 C4.02990467,6.46208889 3.40040256,6.46030644 3.00715561,6.85355339 C2.61663132,7.24407768 2.62039387,7.88100522 3.0050556,8.26566694 L7.25189631,12.5125076 C7.45396556,12.7145769 7.72071155,12.812258 7.98554611,12.8045098 Z" id="Combined-Shape"></path>
+            </g>
+        </g>
+    </g>
+</svg>

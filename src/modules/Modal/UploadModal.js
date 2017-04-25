@@ -18,16 +18,7 @@ class UploadModal extends React.Component {
             fileList: [],
             selectIndex: -1, //预览图片区，当前选中图片的索引
             nameInputValue: '',
-            labels: ["Camera",
-                    "SeewoOS",
-                    "EasiNote5",
-                    "汽车电子",
-                    "Note",
-                    "军队项目",
-                    "希沃信鸽",
-                    "VR",
-                    "TV",
-                    ],
+            labels: [],
             selectedLabels: [],
             labelInputEditable: false,
         };
@@ -40,9 +31,10 @@ class UploadModal extends React.Component {
         axios.get(`${config.serverHost}/api/getLabels`)
             .then((res) => {
                 if(res.status == 200 && res.data.code == 0) {
-                    // self.setState({
-                    //     labels: res.data.labels
-                    // })
+                    self.setState({
+                        labels: res.data.labels
+                    })
+                    // console.log(res.data.labels);
                 }
             }).catch((res) => {
 
@@ -281,9 +273,9 @@ class UploadModal extends React.Component {
             return  <CheckableTag
                         key={`no.${index}`}
                         onChange={this.handleCheckableTagChange}
-                        checked={this.state.selectedLabels.indexOf(value) > -1}
+                        checked={this.state.selectedLabels.indexOf(value.labelName) > -1}
                         >
-                        {value}
+                        {value.labelName}
                     </CheckableTag>
         });
 

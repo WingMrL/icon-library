@@ -19,15 +19,23 @@ exports.addGroup = function(req, res) {
 };
 
 exports.getGroups = function(req, res) {
-    Group.fetch(function(err, groups) {
-        if(err) {
-            console.log(err);
+    let options = {
+        limit: 9,
+        sort: {
+            'meta.updateAt': -1
         }
+    }
+    Group.find({})
+        .populate('icons', ['iconUrl'], {}, options)
+        .exec(function(err, groups) {
+            if(err) {
+                console.log(err);
+            }
 
-        res.json({
-            code: 0,
-            status: 'ok',
-            groups: groups
+            res.json({
+                code: 0,
+                status: 'ok',
+                groups: groups
+            });
         });
-    });
 }

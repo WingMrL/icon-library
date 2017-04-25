@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="18px" height="18px" viewBox="0 0 18 18" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 43.1 (39012) - http://www.bohemiancoding.com/sketch -->
+    <title>ic_复选框_选中</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <rect id="path-1" x="0" y="0" width="18" height="18" rx="1"></rect>
+    </defs>
+    <g id="Symbols" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="ic_复选框_选中">
+            <g>
+                <g id="Rectangle-13">
+                    <use fill="#0D9BE4" fill-rule="evenodd" xlink:href="#path-1"></use>
+                    <rect stroke="#0E9BE4" stroke-width="1" x="0.5" y="0.5" width="17" height="17" rx="1"></rect>
+                </g>
+                <path d="M7.98782749,13.0302582 C8.14262019,12.984017 8.28857382,12.8995223 8.41105431,12.7770418 L14.3852964,6.80279968 C14.776434,6.41166212 14.7774656,5.77746557 14.3869413,5.38694128 C13.9936943,4.99369433 13.3625156,4.99715341 12.9710829,5.38858612 L7.58785796,10.771811 L5.15748298,8.34143607 C4.7693888,7.95334189 4.14091649,7.95258923 3.74766953,8.34583618 C3.35714524,8.73636047 3.36399911,9.37637932 3.74326942,9.75564963 L6.83517875,12.847559 C7.14654022,13.1589204 7.61262312,13.2209663 7.98782749,13.0302582 Z" id="Combined-Shape" fill="#FFFFFF"></path>
+            </g>
+        </g>
+    </g>
+</svg>
