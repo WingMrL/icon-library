@@ -48,6 +48,7 @@ class UploadBtn extends React.Component {
                     visible={this.state.uplodaModalVisible}
                     onCancel={this.onCancel}
                     key={this.state.modalKey}
+                    groupId={this.props.groupId}
                     />
             </div>
         );

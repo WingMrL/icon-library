@@ -1,18 +1,21 @@
 let mongoose = require('mongoose');
-const Schema = mongoose.Schema
-const ObjectId = Schema.Types.ObjectId
+let config = require('../../config/config');
+const Schema = mongoose.Schema;
+const ObjectId = Schema.Types.ObjectId;
 
 let IconSchema = new Schema({
-  iconName: String,
+  fileName: String,
   iconUrl: String,
+  width: Number,
+  height: Number,
   labels: [{
     type: ObjectId,
     ref: 'Label'
   }],
-  groups: [{
+  group: {
     type: ObjectId,
     ref: 'Group'
-  }],
+  },
   meta: {
     createAt: {
       type: Date,
@@ -36,6 +39,10 @@ IconSchema.pre('save', function(next) {
 
   next()
 })
+
+IconSchema.virtual('iconName').get(function() {
+  return this.fileName.replace(/-timestamp\d+/, '').replace(config.fileSuffixReg, '');
+});
 
 IconSchema.statics = {
   fetch: function(cb) {

@@ -6,12 +6,11 @@ var mongoose = require('mongoose');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
-var multer = require('multer');
 var ejs = require('ejs');
 var fs = require('fs');
+var config = require('../config/config');
 
-var dbUrl = 'mongodb://localhost:27017/icon';
-mongoose.connect(dbUrl);
+mongoose.connect(config.dbUrl);
 
 // models loading
 var models_path = path.join(__dirname, 'Models');
@@ -41,24 +40,6 @@ app.set('views', path.join(__dirname, '../dist'));
 
 app.engine('html', ejs.__express);
 app.set('view engine', 'html');
-
-var uploadFolder = path.join(__dirname, '..', 'dist', 'upload');
-
-// console.log(uploadFolder);
-
-// 通过 filename 属性定制
-var storage = multer.diskStorage({
-    destination: function (req, file, cb) {
-        cb(null, uploadFolder);    // 保存的路径，备注：需要自己创建
-    },
-    filename: function (req, file, cb) {
-        // 将保存文件名设置为 字段名 + 时间戳，比如 logo-1478521468943
-        cb(null, file.originalname);  
-    }
-});
-
-// 通过 storage 选项来对 上传行为 进行定制化
-var upload = multer({ storage: storage })
 
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
@@ -100,13 +81,6 @@ app.all('*', function(req, res, next) {
 app.options('/*', function(req, res, next) {
   res.json({status:'OK'});
 });
-
-app.post('/api/uploadIcon', upload.single('icon'), function(req, res, next) {
-  res.json({status:'OK',file:req.file,body:req.body});
-});
-// app.post('/api/uploadIcon', function(req, res, next) {
-//   res.json({status:'OK',file:req.file,body:req.body});
-// });
 
 require('./route/routes')(app);
 

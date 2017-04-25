@@ -57,6 +57,8 @@ class Index extends React.Component {
             return <Group 
                 key={value._id}
                 groupName={value.groupName}
+                groupEngName={value.groupEngName}
+                _id={value._id}
                 groupIconUrl={value.groupIconUrl}
                 icons={value.icons}
                 />

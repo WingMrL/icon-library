@@ -77,14 +77,9 @@ class UploadModal extends React.Component {
     }
 
     handleOk = () => {
-        console.log('ok');
         this.setState({
             uploadFlag: true
         });
-    }
-
-    setLabelsOfFile = () => {
-
     }
 
     setUploadFlag = (flag) => {
@@ -96,7 +91,7 @@ class UploadModal extends React.Component {
     setSelectedIndex = (index) => {
         this.setState({
             selectIndex: index,
-            nameInputValue: this.state.fileList[index].filename
+            nameInputValue: index > -1 ? this.state.fileList[index].filename : ''
         })
     }
 
@@ -108,7 +103,7 @@ class UploadModal extends React.Component {
             //最后一下上传完，把uploadFlag设回false
             if(this.state.fileList.length == this.errorUploadCount + 1) {
                 this.setUploadFlag();
-                
+                this.setSelectedIndex(-1);
             }
         }
 
@@ -152,7 +147,7 @@ class UploadModal extends React.Component {
 
     handleNameInputChange = (e) => {
         let name = e.target.value;
-        let suffix = this.state.nameInputValue.match(/\.(png|jpg|svg|jpeg)$/i)[0];
+        let suffix = this.state.nameInputValue.match(config.fileSuffixReg)[0];
         // console.log(this.state.nameInputValue+"-----"+name+"---"+suffix);
         this.setState({
             nameInputValue: name + suffix
@@ -161,7 +156,7 @@ class UploadModal extends React.Component {
 
     handelNameInputBlur = (e) => {
         let name = e.target.value;
-        let suffix = this.state.nameInputValue.match(/\.(png|jpg|svg|jpeg)$/i)[0];
+        let suffix = this.state.nameInputValue.match(config.fileSuffixReg)[0];
         if(name == '') {
             message.warning("名称为空则使用原名", 2);
             return;
@@ -252,9 +247,10 @@ class UploadModal extends React.Component {
 
     render() {
         // console.log(this.state.fileList);
+        // console.log(this.props.groupId);
         
         // 文件名 input
-        let nameInputValue = this.state.nameInputValue.replace(/\.(png|jpg|svg|jpeg)$/i, '');
+        let nameInputValue = this.state.nameInputValue.replace(config.fileSuffixReg, '');
         let uploadIconPreviewList = this.state.fileList.map((value, index) => {
             return <UploadIconPreview 
                         key={value.uid} 
@@ -320,6 +316,7 @@ class UploadModal extends React.Component {
                         uploadFlag={this.state.uploadFlag}
                         fileList={this.state.fileList}
                         removeUploadSuccessFile={this.removeUploadSuccessFile}
+                        groupId={this.props.groupId}
                         />
                 </ul>
                 <span className={`split`}></span>

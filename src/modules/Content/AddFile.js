@@ -44,15 +44,28 @@ class AddFile extends React.Component {
     }
 
     handleCustomRequest = (obj) => {
-
+        let self = this;
         this.props.fileList.forEach((value) => {
             if(value.uid == obj.file.uid) {
+                let file = obj.file;
+                obj.data = {
+                    filename: file.filename,
+                    width: file.width,
+                    height: file.height,
+                    labels: [...file.labels],
+                    size: file.size,
+                    type: file.type,
+                    uid: file.uid,
+                    groupId: self.props.groupId
+                }
+                // debugger;
                 defaultRequest(obj);
             }
         })
     }
 
     render() {
+        // console.log(this.props.groupId);
         return (
             <Upload
                 showUploadList={false}

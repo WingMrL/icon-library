@@ -43,6 +43,11 @@ LabelSchema.statics = {
     return this
       .findOne({_id: id})
       .exec(cb)
+  },
+  findByLabelName: function(name, cb) {
+    return this
+      .findOne({labelName: name})
+      .exec(cb);
   }
 }
 

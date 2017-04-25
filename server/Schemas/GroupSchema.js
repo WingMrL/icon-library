@@ -4,6 +4,7 @@ const ObjectId = Schema.Types.ObjectId
 
 let GroupSchema = new Schema({
   groupName: String,
+  groupEngName: String,
   groupIconUrl: String,
   icons: [{
     type: ObjectId,

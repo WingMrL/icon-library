@@ -6,7 +6,7 @@ import styles from './Group.css'
 class Group extends React.Component {
     render() {
         return (
-            <Link to="/innergroup" className={styles["group-container"]} style={this.props.style}>
+            <Link to={`/innergroup/${this.props._id}`} className={styles["group-container"]} style={this.props.style}>
                 {/*<div className={styles["group-container"]}>*/}
                     <div className={styles["icon-container"]}>
                         <ul className={styles["ul"]}>

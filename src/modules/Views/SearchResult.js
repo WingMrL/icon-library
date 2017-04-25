@@ -6,7 +6,6 @@ import ContentContainer from '../Layout/ContentContainer';
 
 import Logo from '../Header/Logo';
 import SearchBar from '../Header/SearchBar';
-import UploadBtn from '../Header/UploadBtn';
 import GroupMenu from '../Menu/Menu';
 import ResultTitle from '../Menu/ResultTitle';
 import MenuBtnsContainer from '../Menu/MenuBtnsContainer';
@@ -34,7 +33,6 @@ class SearchResult extends React.Component {
                 <HeaderContainer >
                     <Logo/>
                     <SearchBar/>
-                    <UploadBtn />
                 </HeaderContainer>
                 <ContentContainer >
                     { this.state.fileNotFound ?

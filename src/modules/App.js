@@ -10,7 +10,7 @@ class App extends React.Component {
       <Router>
         <div>
           <Route exact path="/" component={Index}/>
-          <Route path="/innergroup" component={InnerGroup}/>
+          <Route path="/innergroup/:groupid" component={InnerGroup}/>
           <Route path="/searchresult" component={SearchResult}/>
         </div>
       </Router>

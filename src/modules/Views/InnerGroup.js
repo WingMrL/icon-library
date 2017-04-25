@@ -17,13 +17,19 @@ import SelectAll from '../Menu/SelectAll';
 import InnerGroupIcon from '../Content/InnerGroupIcon';
 
 class InnerGroup extends React.Component {
+
+    constructor(props) {
+        super(props);
+    }
+
     render() {
+        // console.log(this.props);
         return (
             <LayoutMain>
                 <HeaderContainer >
                     <Logo/>
                     <SearchBar/>
-                    <UploadBtn />
+                    <UploadBtn groupId={this.props.match.params.groupid}/>
                 </HeaderContainer>
                 <ContentContainer >
                     <GroupMenu>
