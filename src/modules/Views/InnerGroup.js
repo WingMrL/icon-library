@@ -20,6 +20,23 @@ class InnerGroup extends React.Component {
 
     constructor(props) {
         super(props);
+        this.state = {
+
+        };
+    }
+
+    componentWillMount() {
+        let self = this;
+        // axios.get(`${config.serverHost}/api/getGroups`)
+        //     .then((res) => {
+        //         if(res.status == 200 && res.data.code == 0) {
+        //             self.setState({
+        //                 groups: res.data.groups
+        //             })
+        //         }
+        //     }).catch((res) => {
+
+        //     });
     }
 
     render() {
