@@ -3,6 +3,7 @@ import { Menu, Icon } from 'antd';
 const SubMenu = Menu.SubMenu;
 import './MoreMenu.less';
 import DeleteConfirmModal from '../Modal/DeleteConfirmModal';
+import RenameModal from '../Modal/RenameModal';
 import { connect } from 'react-redux';
 import axios from 'axios';
 import config from '../../../config/config';
@@ -12,15 +13,18 @@ class MoreMenu extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            deleteModalVisible: false
+            deleteModalVisible: false,
+            renameModalVisible: false
         };
-
-        this.handleClick = this.handleClick.bind(this);
-        this.onOk = this.onOk.bind(this);
-        this.onCancel = this.onCancel.bind(this);
     }
 
     handleClick = (e) => {
+        if(e.key === "1") {
+            console.log('hahaha');
+            this.setState({
+                renameModalVisible: true
+            });
+        }
         if(e.key === "2") {
             this.setState({
                 deleteModalVisible: true
@@ -28,7 +32,20 @@ class MoreMenu extends React.Component {
         }
     }
 
-    onOk = () => {
+    onRenameModalCancel = () => {
+        this.setState({
+            renameModalVisible: false
+        });
+    }
+
+    onrenameModalOk = () => {
+        console.log(this.props.selectedIcons);
+        this.setState({
+            renameModalVisible: false
+        });
+    }
+
+    onDeleteModalOk = () => {
         // 删除
         let { selectedIcons } = this.props;
         let iconsId = selectedIcons.map(val => val.id);
@@ -44,7 +61,7 @@ class MoreMenu extends React.Component {
         });
     }
 
-    onCancel = () => {
+    onDeleteModalCancel = () => {
         this.setState({
             deleteModalVisible: false
         });
@@ -72,8 +89,13 @@ class MoreMenu extends React.Component {
                 </Menu>
                 <DeleteConfirmModal 
                     visible={this.state.deleteModalVisible}
-                    onCancel={this.onCancel}
-                    onOk={this.onOk}
+                    onCancel={this.onDeleteModalCancel}
+                    onOk={this.onDeleteModalOk}
+                    />
+                <RenameModal
+                    visible={this.state.renameModalVisible}
+                    onCancel={this.onRenameModalCancel}
+                    onOk={this.onrenameModalOk}
                     />
             </div>
         );
