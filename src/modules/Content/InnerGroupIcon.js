@@ -1,4 +1,5 @@
 import React from 'react';
+import { connect } from 'react-redux';
 
 import styles from './InnerGroupIcon.css';
 import NormalIcon from './NormalIcon';
@@ -7,9 +8,6 @@ class InnerGroupIcon extends React.Component {
 
     constructor(props) {
         super(props);
-        this.state = {
-             
-        };
     }
 
     render() {
@@ -20,11 +18,7 @@ class InnerGroupIcon extends React.Component {
             normalIconList = icons.map((value) => {
                 return <NormalIcon 
                             key={value._id}
-                            height={value.height}
-                            width={value.width}
-                            iconUrl={value.iconUrl}
-                            labels={value.labels}
-                            fileName={value.fileName}
+                            icon={value}
                             />
             });
         }
@@ -35,5 +29,11 @@ class InnerGroupIcon extends React.Component {
         );
     }
 }
+
+const matStateToProps = (state, ownProps) => ({
+    icons: state.icons
+});
+
+InnerGroupIcon = connect(matStateToProps)(InnerGroupIcon);
 
 export default InnerGroupIcon;

@@ -10,13 +10,13 @@ module.exports = function(app) {
     app.get('/api/getGroups', Group.getGroups);
     app.get('/api/getGroup', Group.getGroup);
 
-    // app.post('/api/addIcon', Icon.addIcon);
+    app.post('/api/uploadIcon', upload.single('icon'), Icon.addIcon);
     app.get('/api/getIcons', Icon.getIcons);
+    app.post('/api/deleteIcons', Icon.deleteIcons);
 
     app.post('/api/addLabel', Label.addLabel);
     app.get('/api/getLabels', Label.getLabels);
 
-    app.post('/api/uploadIcon', upload.single('icon'), Icon.addIcon);
 
     /* GET home page. */
     app.get('/*', function(req, res, next) {

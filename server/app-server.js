@@ -67,21 +67,23 @@ app.use(express.static(path.join(__dirname, '..', 'dist', 'upload')));
 //   res.json({status:'OK'});
 // });
 
-//设置跨域访问
+//设置跨域访问 也可以使用cors中间件
 app.all('*', function(req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
-    res.header("Access-Control-Allow-Headers", "X-Requested-With");
+    res.header("Access-Control-Allow-Headers", 'Content-Type, Content-Length, Authorization, Accept, X-Requested-With');
+    // res.header("Access-Control-Allow-Headers", "X-Requested-With");
     // res.header("Access-Control-Allow-Headers", "Content-Type");
     // res.header("Access-Control-Allow-Headers", "*");
     res.header("Access-Control-Allow-Methods","PUT,POST,GET,DELETE,OPTIONS");
-    res.header("X-Powered-By",' 3.2.1');
-    res.header("Content-Type", "application/json;charset=utf-8");
-    next();
+    // res.header("X-Powered-By",' 3.2.1');
+    // res.header("Content-Type", "application/json;charset=utf-8");
+    if(req.method == 'OPTIONS') {
+      res.sendStatus(200);
+    } else {
+      next();
+    }
 });
 
-app.options('/*', function(req, res, next) {
-  res.json({status:'OK'});
-});
 
 require('./route/routes')(app);
 

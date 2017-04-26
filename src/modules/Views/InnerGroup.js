@@ -1,4 +1,5 @@
 import React from 'react';
+import { connect } from 'react-redux';
 
 import LayoutMain from '../Layout/LayoutMain';
 import HeaderContainer from '../Layout/HeaderContainer';
@@ -17,6 +18,7 @@ import SelectAll from '../Menu/SelectAll';
 import InnerGroupIcon from '../Content/InnerGroupIcon';
 import axios from 'axios';
 import config from '../../../config/config';
+import { addAllIconsToIcons, removeAllIconsFromIcons} from '../../actions/icons';
 
 class InnerGroup extends React.Component {
 
@@ -39,17 +41,26 @@ class InnerGroup extends React.Component {
             .then((res) => {
                 if(res.status == 200 && res.data.code == 0) {
                     self.setState({
-                        group: res.data.group
+                        group: {
+                            _id: res.data.group._id,
+                            meta: res.data.group.meta,
+                            groupName: res.data.group.groupName,
+                            groupIconUrl: res.data.group.groupIconUrl,
+                            groupEngName: res.data.group.groupEngName
+                        }
                     })
+                    self.props.dispatch(addAllIconsToIcons(res.data.group.icons));
                 }
             }).catch((res) => {
                 console.log(res);
             });
     }
 
+    componentWillUnmount() {
+        this.props.dispatch(removeAllIconsFromIcons());
+    }
+
     render() {
-        // console.log(this.props);
-        // console.log(this.state.group);
         let { group } = this.state;
         return (
             <LayoutMain>
@@ -71,13 +82,13 @@ class InnerGroup extends React.Component {
                             <MoreMenu />
                         </MenuBtnsContainer>
                     </GroupMenu>
-                    <InnerGroupIcon
-                        icons={group.icons}
-                        ></InnerGroupIcon>
+                    <InnerGroupIcon></InnerGroupIcon>
                 </ContentContainer>
             </LayoutMain>
         );
     }
 }
+
+InnerGroup = connect()(InnerGroup);
 
 export default InnerGroup;

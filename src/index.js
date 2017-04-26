@@ -7,11 +7,20 @@ import { AppContainer } from 'react-hot-loader';
 // AppContainer 是一个 HMR 必须的包裹(wrapper)组件
 
 import App from './modules/App';
+import configureStore from './store/create';
+import DevTools from './containers/DevTools';
+
+const store = configureStore();
 
 const render = (Component) => {
   ReactDOM.render(
     <AppContainer>
-      <Component/>
+      <Provider store={store}>
+        <div>
+          <Component/>
+          <DevTools></DevTools>
+        </div>
+      </Provider>
     </AppContainer>,
     document.getElementById('root')
   );

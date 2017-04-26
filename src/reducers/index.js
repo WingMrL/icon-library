@@ -1,10 +1,10 @@
 import { combineReducers } from 'redux';
-import todos from './todos';
-import visibilityFilter from './visibilityFilter';
+import icons from './icons';
+import selectedIcons from './selectedIcons';
 
 const iconLibraryApp = combineReducers({
-  todos,
-  visibilityFilter
-})
+  icons,
+  selectedIcons,
+});
 
 export default iconLibraryApp;
