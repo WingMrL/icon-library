@@ -8,6 +8,7 @@ module.exports = function(app) {
 
     app.post('/api/addGroup', Group.addGroup);
     app.get('/api/getGroups', Group.getGroups);
+    app.get('/api/getGroup', Group.getGroup);
 
     // app.post('/api/addIcon', Icon.addIcon);
     app.get('/api/getIcons', Icon.getIcons);

@@ -51,7 +51,8 @@ exports.addIcon = function(req, res) {
                                 if(saveCount == 0) {
                                     res.json({
                                         code: 0,
-                                        status: 'ok'
+                                        status: 'ok',
+                                        icon: icon
                                     });
                                 }
                             });
@@ -72,7 +73,8 @@ exports.addIcon = function(req, res) {
                                 if(saveCount == 0) {
                                     res.json({
                                         code: 0,
-                                        status: 'ok'
+                                        status: 'ok',
+                                        icon: icon
                                     });
                                 }
                             });

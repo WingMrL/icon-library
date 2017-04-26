@@ -1,14 +1,14 @@
 import React from 'react';
 
-import logo_en5 from '../../assets/images/menu/Logo_en5.png';
-import styles from './GroupLogo.css';
+import './GroupLogo.less';
 
 class GroupLogo extends React.Component {
     render() {
+        let {groupName, groupIconUrl} = this.props
         return (
-            <div className={styles['logo-container']}>
-                <img src={logo_en5} className={styles['logo-img']}/>
-                <span className={styles['name-span']}>EasiNote5</span>
+            <div className={`logo-container`}>
+                <img src={groupIconUrl} className={`logo-img`}/>
+                <span className={`name-span`}>{groupName}</span>
             </div>
         );
     }

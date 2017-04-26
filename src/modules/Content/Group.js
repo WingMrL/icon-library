@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-import styles from './Group.less';
+import './Group.less';
 import config from '../../../config/config';
 
 class Group extends React.Component {

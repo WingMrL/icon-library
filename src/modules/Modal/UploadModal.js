@@ -240,6 +240,7 @@ class UploadModal extends React.Component {
     render() {
         // console.log(this.state.fileList);
         // console.log(this.props.groupId);
+        // console.log(this.state.fileList);
         
         // 文件名 input
         let nameInputValue = this.state.nameInputValue.replace(config.fileSuffixReg, '');

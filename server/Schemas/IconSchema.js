@@ -10,7 +10,7 @@ let IconSchema = new Schema({
   height: Number,
   labels: [{
     type: ObjectId,
-    ref: 'Label'
+    ref: 'Label',
   }],
   group: {
     type: ObjectId,
@@ -40,9 +40,9 @@ IconSchema.pre('save', function(next) {
   next()
 })
 
-IconSchema.virtual('iconName').get(function() {
-  return this.fileName.replace(/-timestamp\d+/, '').replace(config.fileSuffixReg, '');
-});
+// IconSchema.virtual('iconName').get(function() {
+//   return this.fileName.replace(/-timestamp\d+/, '').replace(config.fileSuffixReg, '');
+// });
 
 IconSchema.statics = {
   fetch: function(cb) {

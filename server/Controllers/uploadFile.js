@@ -21,9 +21,9 @@ var storage = multer.diskStorage({
     },
     filename: function (req, file, cb) {
         // 将保存文件名设置为 字段名 + 时间戳，比如 logo-1478521468943
-        let originalname = file.originalname;
-        let filename = file.originalname.replace(config.fileSuffixReg, '');
-        let suffix = file.originalname.match(config.fileSuffixReg)[0];
+        let originalname = req.body.filename;
+        let filename = originalname.replace(config.fileSuffixReg, '');
+        let suffix = originalname.match(config.fileSuffixReg)[0];
         let trueName = filename + '-timestamp' + Date.now() + suffix;
         req.body.trueName = trueName;
         cb(null, trueName);  

@@ -39,3 +39,42 @@ exports.getGroups = function(req, res) {
             });
         });
 }
+
+exports.getGroup = function(req, res) {
+    let _id = req.query._id;
+    let options = {
+        sort: {
+            'meta.updateAt': -1
+        }
+    }
+    if(_id) {
+        Group.findOne({_id: _id})
+            .populate({
+                path: 'icons',
+                select: 'fileName iconUrl width height labels',
+                model: 'Icon',
+                options: options,
+                populate: {
+                    path: 'labels',
+                    select: 'labelName',
+                    model: 'Label'
+                }
+            })
+            .exec(function(err, group) {
+                if(err) {
+                    console.log(err);
+                }
+                res.json({
+                    code: 0,
+                    status: 'ok',
+                    group: group
+                });
+            });
+    } else {
+        res.json({
+            code: -1,
+            status: 'params error',
+            group: {}
+        });
+    }
+}

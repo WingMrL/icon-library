@@ -6,7 +6,7 @@ let LabelSchema = new Schema({
   labelName: String,
   icons: [{
     type: ObjectId,
-    ref: 'Icon'
+    ref: 'Icon',
   }],
   meta: {
     createAt: {

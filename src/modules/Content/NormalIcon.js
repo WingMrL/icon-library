@@ -1,14 +1,11 @@
 import React from 'react';
 
-import { Checkbox } from 'antd';
+import { Checkbox, Tooltip } from 'antd';
 
 import './NormalIcon.less';
 import bg from '../../assets/images/menu/Logo_en5.png';
 import Labels from './Labels';
-
-const iconStyle = {
-    backgroundImage: `url(${bg})`
-};
+import config from '../../../config/config';
 
 class NormalIcon extends React.Component {
 
@@ -18,13 +15,9 @@ class NormalIcon extends React.Component {
             checked: false,
             mouseEnter: false,
         };
-
-        this.handleCheck = this.handleCheck.bind(this);
-        this.handleMouseToggle = this.handleMouseToggle.bind(this);
-        this.downloadLinkOnClick = this.downloadLinkOnClick.bind(this);
     }
 
-    handleCheck(e) {
+    handleCheck = (e) => {
         this.setState((prevState) => {
             return {
                 checked: !prevState.checked
@@ -32,7 +25,7 @@ class NormalIcon extends React.Component {
         })
     }
 
-    handleMouseToggle(e) {
+    handleMouseToggle = (e) => {
         this.setState((prevState) => {
             return {
                 mouseEnter: !prevState.mouseEnter
@@ -40,21 +33,31 @@ class NormalIcon extends React.Component {
         });
     }
 
-    downloadLinkOnClick(e) {
+    downloadLinkOnClick = (e) => {
         e.preventDefault();
         e.stopPropagation();
         console.log('开始下载....');
     }
 
     render() {
+        let { height, width, iconUrl, labels, fileName } = this.props;
+        fileName = fileName.replace(/-timestamp\d+/, '').replace(config.fileSuffixReg, '');
+        let shortName = fileName;
+        if(shortName.length > 7) {
+            shortName = shortName.slice(0, 7) + '...';
+        }
         const checkedClass = this.state.checked ? 'custom-ant-checkbox-checked' : '';
-        let style = Object.assign({}, iconStyle, {
-            border: this.state.checked ? "1px solid #0d9be4" : "0"
-        });
+        let iconContainerStyle = {
+            backgroundImage: `url(${config.serverHost}/${iconUrl})`,
+            border: this.state.checked ? "1px solid #0d9be4" : "0",
+        };
+        if(width > 120 || height > 120) {
+            iconContainerStyle.backgroundSize = "contain";
+        }
         return (
             <li className={`custom-normal-icon-container`}>
                 <div className={`icon-container`} 
-                    style={style} 
+                    style={iconContainerStyle} 
                     onClick={this.handleCheck}
                     onMouseOver={this.handleMouseToggle}
                     onMouseOut={this.handleMouseToggle}
@@ -66,12 +69,26 @@ class NormalIcon extends React.Component {
                             display: (this.state.checked || this.state.mouseEnter) ? "block" : "none"
                         }}
                         />
-                    <a className={`download-link`} onClick={this.downloadLinkOnClick}>
+                    <a 
+                        className={`download-link`} 
+                        onClick={this.downloadLinkOnClick}
+                        style={{
+                            display: this.state.mouseEnter ? "block" : "none"
+                        }}
+                        >
                         <span className={`icon-download`}></span>
                     </a>
                 </div>
-                <div className={`icon-title`}>下载</div>
-                <Labels />
+                <div className={`icon-title`}>
+                    <Tooltip 
+                        title={fileName}
+                        placement="bottomLeft"
+                        overlayClassName={`custom-ant-overlay-hint-name`}
+                        >
+                        {shortName}
+                    </Tooltip>
+                </div>
+                <Labels labels={labels}/>
             </li>
         );
     }

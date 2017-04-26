@@ -15,32 +15,42 @@ import DownloadBtn from '../Menu/DownloadBtn';
 import Split from '../Menu/Split';
 import SelectAll from '../Menu/SelectAll';
 import InnerGroupIcon from '../Content/InnerGroupIcon';
+import axios from 'axios';
+import config from '../../../config/config';
 
 class InnerGroup extends React.Component {
 
     constructor(props) {
         super(props);
         this.state = {
-
+            group: {},
         };
     }
 
     componentWillMount() {
         let self = this;
-        // axios.get(`${config.serverHost}/api/getGroups`)
-        //     .then((res) => {
-        //         if(res.status == 200 && res.data.code == 0) {
-        //             self.setState({
-        //                 groups: res.data.groups
-        //             })
-        //         }
-        //     }).catch((res) => {
-
-        //     });
+        let url = `${config.serverHost}/api/getGroup`;
+        let data = {
+            params: {
+                _id: this.props.match.params.groupid
+            }
+        };
+        axios.get(url, data)
+            .then((res) => {
+                if(res.status == 200 && res.data.code == 0) {
+                    self.setState({
+                        group: res.data.group
+                    })
+                }
+            }).catch((res) => {
+                console.log(res);
+            });
     }
 
     render() {
         // console.log(this.props);
+        // console.log(this.state.group);
+        let { group } = this.state;
         return (
             <LayoutMain>
                 <HeaderContainer >
@@ -50,7 +60,10 @@ class InnerGroup extends React.Component {
                 </HeaderContainer>
                 <ContentContainer >
                     <GroupMenu>
-                        <GroupLogo/>
+                        <GroupLogo
+                            groupName={group.groupName}
+                            groupIconUrl={group.groupIconUrl}
+                            />
                         <MenuBtnsContainer>
                             <SelectAll />
                             <Split />
@@ -58,7 +71,9 @@ class InnerGroup extends React.Component {
                             <MoreMenu />
                         </MenuBtnsContainer>
                     </GroupMenu>
-                    <InnerGroupIcon></InnerGroupIcon>
+                    <InnerGroupIcon
+                        icons={group.icons}
+                        ></InnerGroupIcon>
                 </ContentContainer>
             </LayoutMain>
         );
