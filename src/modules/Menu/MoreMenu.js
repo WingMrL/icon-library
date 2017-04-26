@@ -14,13 +14,12 @@ class MoreMenu extends React.Component {
         this.state = {
             deleteModalVisible: false
         };
-
-        this.handleClick = this.handleClick.bind(this);
-        this.onOk = this.onOk.bind(this);
-        this.onCancel = this.onCancel.bind(this);
     }
 
     handleClick = (e) => {
+        if(e.key === "1") {
+            console.log('hahaha');
+        }
         if(e.key === "2") {
             this.setState({
                 deleteModalVisible: true
