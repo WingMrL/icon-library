@@ -1,4 +1,5 @@
 import React from 'react';
+import { connect } from 'react-redux';
 
 import { Checkbox, Tooltip } from 'antd';
 
@@ -6,23 +7,23 @@ import './NormalIcon.less';
 import bg from '../../assets/images/menu/Logo_en5.png';
 import Labels from './Labels';
 import config from '../../../config/config';
+import { addIconToSelectedIcons, removeIconFromSelectedIcons } from '../../actions/selectedIcons';
 
 class NormalIcon extends React.Component {
 
     constructor(props) {
         super(props);
         this.state = {
-            checked: false,
             mouseEnter: false,
         };
     }
 
     handleCheck = (e) => {
-        this.setState((prevState) => {
-            return {
-                checked: !prevState.checked
-            }
-        })
+        if(this.props.checked) {
+            this.props.dispatch(removeIconFromSelectedIcons(this.props.icon._id));
+        } else {
+            this.props.dispatch(addIconToSelectedIcons(this.props.icon));
+        }
     }
 
     handleMouseToggle = (e) => {
@@ -34,22 +35,23 @@ class NormalIcon extends React.Component {
     }
 
     downloadLinkOnClick = (e) => {
-        e.preventDefault();
+        // e.preventDefault();
         e.stopPropagation();
-        console.log('开始下载....');
     }
 
     render() {
-        let { height, width, iconUrl, labels, fileName } = this.props;
-        fileName = fileName.replace(/-timestamp\d+/, '').replace(config.fileSuffixReg, '');
-        let shortName = fileName;
+        let { height, width, iconUrl, labels, fileName } = this.props.icon;
+        let { checked } = this.props;
+        fileName = fileName.replace(/-timestamp\d+/, '');
+        let iconName = fileName.replace(config.fileSuffixReg, '');
+        let shortName = iconName;
         if(shortName.length > 7) {
             shortName = shortName.slice(0, 7) + '...';
         }
-        const checkedClass = this.state.checked ? 'custom-ant-checkbox-checked' : '';
+        const checkedClass = checked ? 'custom-ant-checkbox-checked' : '';
         let iconContainerStyle = {
             backgroundImage: `url(${config.serverHost}/${iconUrl})`,
-            border: this.state.checked ? "1px solid #0d9be4" : "0",
+            border: checked ? "1px solid #0d9be4" : "0",
         };
         if(width > 120 || height > 120) {
             iconContainerStyle.backgroundSize = "contain";
@@ -64,9 +66,9 @@ class NormalIcon extends React.Component {
                     >
                     <Checkbox 
                         className={`custom-ant-checkbox ${checkedClass}`}
-                        checked={this.state.checked}
+                        checked={checked}
                         style={{
-                            display: (this.state.checked || this.state.mouseEnter) ? "block" : "none"
+                            display: (checked || this.state.mouseEnter) ? "block" : "none"
                         }}
                         />
                     <a 
@@ -75,13 +77,15 @@ class NormalIcon extends React.Component {
                         style={{
                             display: this.state.mouseEnter ? "block" : "none"
                         }}
+                        download={fileName}
+                        href={`${config.serverHost}/${iconUrl}`}
                         >
                         <span className={`icon-download`}></span>
                     </a>
                 </div>
                 <div className={`icon-title`}>
                     <Tooltip 
-                        title={fileName}
+                        title={iconName}
                         placement="bottomLeft"
                         overlayClassName={`custom-ant-overlay-hint-name`}
                         >
@@ -93,5 +97,20 @@ class NormalIcon extends React.Component {
         );
     }
 }
+
+const mapStateToProps = (state, ownProps) => {
+    let checked = false;
+    let { selectedIcons } = state;
+    selectedIcons.forEach((value) => {
+        if(value.id == ownProps.icon._id) {
+            checked = true;
+        }
+    });
+    return {
+        checked
+    };
+}
+
+NormalIcon = connect(mapStateToProps)(NormalIcon);
 
 export default NormalIcon;
