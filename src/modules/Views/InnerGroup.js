@@ -30,6 +30,10 @@ class InnerGroup extends React.Component {
     }
 
     componentWillMount() {
+        this.reflashPage();
+    }
+
+    reflashPage = () => {
         let self = this;
         let url = `${config.serverHost}/api/getGroup`;
         let data = {
@@ -67,7 +71,10 @@ class InnerGroup extends React.Component {
                 <HeaderContainer >
                     <Logo/>
                     <SearchBar/>
-                    <UploadBtn groupId={this.props.match.params.groupid}/>
+                    <UploadBtn 
+                        groupId={this.props.match.params.groupid}
+                        reflashPage={this.reflashPage}
+                        />
                 </HeaderContainer>
                 <ContentContainer >
                     <GroupMenu>
@@ -79,7 +86,7 @@ class InnerGroup extends React.Component {
                             <SelectAll />
                             <Split />
                             <DownloadBtn />
-                            <MoreMenu />
+                            <MoreMenu reflashPage={this.reflashPage}/>
                         </MenuBtnsContainer>
                     </GroupMenu>
                     <InnerGroupIcon></InnerGroupIcon>

@@ -7,14 +7,17 @@ import config from '../../../config/config';
 class Group extends React.Component {
     render() {
         let { _id, groupName, style, groupIconUrl, icons} = this.props;
-        let iconsList = icons.map((value, index) => {
-            return <li  key={value._id}
-                        className={`li`}
-                        style={{
-                            backgroundImage: `url(${config.serverHost}/${value.iconUrl})`
-                        }}
-                        ></li>
-        });
+        let iconsList;
+        if(icons) {
+            iconsList = icons.map((value, index) => {
+                return <li  key={value._id}
+                            className={`li`}
+                            style={{
+                                backgroundImage: `url(${config.serverHost}/${value.iconUrl})`
+                            }}
+                            ></li>
+            });
+        }
         return (
             <Link to={`/innergroup/${_id}`} className={`group-container-inner`} style={style}>
                 <div className={`icon-container`}>

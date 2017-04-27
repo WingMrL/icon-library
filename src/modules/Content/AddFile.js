@@ -24,7 +24,6 @@ class AddFile extends React.Component {
             let timer = setInterval(() => {
                 if(self.props.uploadFlag) {
                     resolve();
-                    console.log('promist then 开始上传....');
                     clearInterval(timer);
                     timer = null;
                 }

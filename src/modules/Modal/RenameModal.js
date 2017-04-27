@@ -7,23 +7,26 @@ class RenameModal extends React.Component {
 
     constructor(props) {
         super(props);
-        this.handleCancel = this.handleCancel.bind(this);
-        this.handleOk = this.handleOk.bind(this);
     }
     
-    handleCancel() {
+    handleCancel = () => {
         this.props.onCancel();
     }
 
-    handleOk() {
+    handleOk = () => {
         this.props.onOk();
     }
 
+    handleOnChange = (e) => {
+        this.props.onChange(e.target.value);
+    }
+
     render() {
+        let { value, visible } = this.props
         return (
             <Modal 
                 title="重命名"
-                visible={this.props.visible}
+                visible={visible}
                 cancelText="取消"
                 okText="确认"
                 onOk={this.handleOk}
@@ -33,6 +36,8 @@ class RenameModal extends React.Component {
                 <Input 
                     size="large"
                     className={`input-name`}
+                    value={value}
+                    onChange={this.handleOnChange}
                     />
                 <p className={`confirm`}>请输入文件名</p>
             </Modal>

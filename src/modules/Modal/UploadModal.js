@@ -96,6 +96,7 @@ class UploadModal extends React.Component {
             if(this.state.fileList.length == this.errorUploadCount + 1) {
                 this.setUploadFlag();
                 this.setSelectedIndex(-1);
+                this.props.reflashPage();
             }
         }
 

@@ -13,6 +13,7 @@ module.exports = function(app) {
     app.post('/api/uploadIcon', upload.single('icon'), Icon.addIcon);
     app.get('/api/getIcons', Icon.getIcons);
     app.post('/api/deleteIcons', Icon.deleteIcons);
+    app.post('/api/renameIcon', Icon.renameIcon);
 
     app.post('/api/addLabel', Label.addLabel);
     app.get('/api/getLabels', Label.getLabels);

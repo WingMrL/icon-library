@@ -27,6 +27,7 @@ class UploadBtn extends React.Component {
     }
 
     render() {
+        let { reflashPage } = this.props;
         return (
             <div style={{
                 marginLeft: 220
@@ -49,6 +50,7 @@ class UploadBtn extends React.Component {
                     onCancel={this.onCancel}
                     key={this.state.modalKey}
                     groupId={this.props.groupId}
+                    reflashPage={reflashPage}
                     />
             </div>
         );

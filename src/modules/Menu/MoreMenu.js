@@ -1,5 +1,5 @@
 import React from 'react';
-import { Menu, Icon } from 'antd';
+import { Menu, Icon, message } from 'antd';
 const SubMenu = Menu.SubMenu;
 import './MoreMenu.less';
 import DeleteConfirmModal from '../Modal/DeleteConfirmModal';
@@ -14,7 +14,8 @@ class MoreMenu extends React.Component {
         super(props);
         this.state = {
             deleteModalVisible: false,
-            renameModalVisible: false
+            renameModalVisible: false,
+            newName: '',
         };
     }
 
@@ -38,14 +39,39 @@ class MoreMenu extends React.Component {
         });
     }
 
-    onrenameModalOk = () => {
-        console.log(this.props.selectedIcons);
+    renameModalInputOnChange = (value) => {
         this.setState({
-            renameModalVisible: false
+            newName: value
+        });
+    }
+
+    onrenameModalOk = () => {
+        // console.log(this.props.selectedIcons);
+        if(this.state.newName == '') {
+            message.warning("名字不能为空!", 2);
+            return;
+        }
+        let self = this;
+        let data = {
+            iconId: this.props.selectedIcons[0].id,
+            newName: this.state.newName
+        }
+        axios.post(`${config.serverHost}/api/renameIcon`, data)
+            .then((res) => {
+                console.log(res);
+                self.props.reflashPage();
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+        this.setState({
+            renameModalVisible: false,
+            newName: '',
         });
     }
 
     onDeleteModalOk = () => {
+        let self = this;
         // 删除
         let { selectedIcons } = this.props;
         let iconsId = selectedIcons.map(val => val.id);
@@ -54,7 +80,7 @@ class MoreMenu extends React.Component {
         };
         axios.post(`${config.serverHost}/api/deleteIcons`, data)
             .then((res) => {
-                console.log(res);
+                self.props.reflashPage();
             });
         this.setState({
             deleteModalVisible: false
@@ -96,6 +122,8 @@ class MoreMenu extends React.Component {
                     visible={this.state.renameModalVisible}
                     onCancel={this.onRenameModalCancel}
                     onOk={this.onrenameModalOk}
+                    value={this.state.newName}
+                    onChange={this.renameModalInputOnChange}
                     />
             </div>
         );

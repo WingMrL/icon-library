@@ -220,3 +220,61 @@ exports.deleteIcons = function(req, res) {
         });
     });
 }
+
+exports.renameIcon = function(req, res) {
+    let iconId = req.body.iconId;
+    let newName = req.body.newName;
+    serier([
+        function(callback) {
+            Icon.findOne({ _id: iconId })
+                .exec()
+                .then(function(icon) {
+                    let { iconUrl, fileName } = icon;
+                    // console.log(icon);
+                    let suffix = fileName.match(config.fileSuffixReg)[0];
+                    let newFileName = `${newName}-timestamp${Date.now()}${suffix}`;
+                    let newIconUrl = iconUrl.replace(fileName, newFileName);
+
+                    serier([
+                        function(cb) {
+                            fs.rename(`${config.uploadPath}/${iconUrl}`
+                                , `${config.uploadPath}/${newIconUrl}`
+                                , function(err) {
+                                    if(err) {
+                                        console.log(err);
+                                    }
+                                    cb(null, '1');
+                                });
+                        },
+                        function(cb) {
+                            Icon.update({ _id: iconId }
+                                    , { $set: { 
+                                            iconUrl: newIconUrl,
+                                            fileName: newFileName
+                                        }
+                                     })
+                                .exec()
+                                .then(function(result) {
+                                    console.log(result);
+                                    cb(null, '2');
+                                })
+                                .catch(function(err) {
+                                    console.log(err);
+                                });
+                        }
+                    ], function(err, result) {
+                        callback(null, result);
+                    });
+                })
+                .catch(function(err) {
+                    console.log(err);
+                });
+        }
+    ], function(err, result) {
+        console.log(result);
+        res.json({
+            code: 0,
+            msg: 'ok'
+        });
+    })
+}

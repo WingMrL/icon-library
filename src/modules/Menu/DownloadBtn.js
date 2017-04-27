@@ -24,6 +24,7 @@ class DownloadBtn extends React.Component {
     }
 
     render() {
+        let { disabled } = this.props;
         return (
             <Button 
                 style={{
@@ -39,6 +40,7 @@ class DownloadBtn extends React.Component {
                 }} 
                 className={styles["btn"]}
                 onClick={this.handleDownload}
+                disabled={disabled}
                 >
                 <span className={"icon-download " + styles["icon"]}></span>
                 <span>下载 </span>
@@ -50,7 +52,8 @@ class DownloadBtn extends React.Component {
 
 const mapStateToProps = (state, ownProps) => {
     return {
-        selectedIcons: state.selectedIcons
+        selectedIcons: state.selectedIcons,
+        disabled: state.selectedIcons == 0
     }
 };
 
