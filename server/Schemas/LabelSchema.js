@@ -51,4 +51,6 @@ LabelSchema.statics = {
   }
 }
 
+LabelSchema.index({ labelName: "text" });
+
 module.exports =  LabelSchema;

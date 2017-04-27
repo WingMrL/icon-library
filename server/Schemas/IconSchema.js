@@ -58,4 +58,6 @@ IconSchema.statics = {
   }
 }
 
+IconSchema.index({ "$**": "text" });
+
 module.exports =  IconSchema;

@@ -23,8 +23,22 @@ class SearchResult extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            fileNotFound: false
+            fileNotFound: false,
+            searchName: '',
         };
+    }
+
+    componentWillMount() {
+        let searchName = '';
+        window.location.search.slice(1).split('&').forEach((value) => {
+            if(value.indexOf('search=') == 0) {
+                searchName = value.replace(/search=/, '');
+            }
+        });
+        console.log(searchName);
+        this.setState({
+            searchName
+        });
     }
 
     render() {

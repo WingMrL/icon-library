@@ -7,6 +7,7 @@ import RenameModal from '../Modal/RenameModal';
 import { connect } from 'react-redux';
 import axios from 'axios';
 import config from '../../../config/config';
+import { removeAllIconsFromSelectedIcons } from '../../actions/selectedIcons';
 
 class MoreMenu extends React.Component {
 
@@ -81,6 +82,7 @@ class MoreMenu extends React.Component {
         axios.post(`${config.serverHost}/api/deleteIcons`, data)
             .then((res) => {
                 self.props.reflashPage();
+                self.props.dispatch(removeAllIconsFromSelectedIcons());
             });
         this.setState({
             deleteModalVisible: false
