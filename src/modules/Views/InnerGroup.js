@@ -19,6 +19,7 @@ import InnerGroupIcon from '../Content/InnerGroupIcon';
 import axios from 'axios';
 import config from '../../../config/config';
 import { addAllIconsToIcons, removeAllIconsFromIcons} from '../../actions/icons';
+import { addIconToSelectedIcons } from '../../actions/selectedIcons';
 
 class InnerGroup extends React.Component {
 
@@ -31,6 +32,26 @@ class InnerGroup extends React.Component {
 
     componentWillMount() {
         this.reflashPage();
+    }
+
+    highlightTargetIcon = () => {
+        let _id = '';
+        window.location.search.slice(1).split('&').forEach((value) => {
+            if(value.indexOf('_id=') == 0) {
+                _id = value.replace(/_id=/, '');
+            }
+        });
+        if(_id !== '') {
+            let icon;
+            this.props.icons.forEach((v) => {
+                if(v._id === _id) {
+                    icon = Object.assign({}, v);
+                }
+            });
+            if(icon) {
+                this.props.dispatch(addIconToSelectedIcons(icon));
+            }
+        }
     }
 
     reflashPage = () => {
@@ -54,6 +75,7 @@ class InnerGroup extends React.Component {
                         }
                     })
                     self.props.dispatch(addAllIconsToIcons(res.data.group.icons));
+                    self.highlightTargetIcon();
                 }
             }).catch((res) => {
                 console.log(res);
@@ -96,6 +118,12 @@ class InnerGroup extends React.Component {
     }
 }
 
-InnerGroup = connect()(InnerGroup);
+const mapStateToProps = (state, ownPropr) => {
+    return {
+        icons: state.icons
+    };
+}
+
+InnerGroup = connect(mapStateToProps)(InnerGroup);
 
 export default InnerGroup;

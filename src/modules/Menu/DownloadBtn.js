@@ -53,7 +53,7 @@ class DownloadBtn extends React.Component {
 const mapStateToProps = (state, ownProps) => {
     return {
         selectedIcons: state.selectedIcons,
-        disabled: state.selectedIcons == 0
+        disabled: state.selectedIcons.length == 0
     }
 };
 

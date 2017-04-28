@@ -17,6 +17,10 @@ import SelectAll from '../Menu/SelectAll';
 import InnerGroupIcon from '../Content/InnerGroupIcon';
 import Group from '../Content/Group';
 import FileNotFound from '../Content/FileNotFound';
+import config from '../../../config/config';
+import axios from 'axios';
+import { connect } from 'react-redux';
+import { addAllIconsToIcons, removeAllIconsFromIcons } from '../../actions/icons';
 
 class SearchResult extends React.Component {
 
@@ -25,47 +29,110 @@ class SearchResult extends React.Component {
         this.state = {
             fileNotFound: false,
             searchName: '',
+            searchResult: {},
         };
     }
 
     componentWillMount() {
+        this.handleSearchOnClick();
+    }
+
+    componentWillUpdate(nextProps, nextState) {
+        // console.log('..........componentWillUpdate', this.state.searchName, nextState.searchName);
+        if(this.state.searchName !== nextState.searchName) {
+            this.requestSearchResult(nextState.searchName);
+        }
+    }
+
+
+    requestSearchResult = (searchName) => {
+        let self = this;
+        let data = {
+            searchName
+        }
+        axios.post(`${config.serverHost}/api/search`, data)
+            .then(function(result) {
+                if(result.data.code == 0) {
+                    console.log(result);
+                    self.setState({
+                        searchResult: result.data.result,
+                        fileNotFound: false
+                    });
+                    if(result.data.result.icons.length == 0) {
+                        self.setState({
+                            fileNotFound: true
+                        });
+                    } else {
+                        self.props.dispatch(addAllIconsToIcons(result.data.result.icons));
+                    }
+                }
+            })
+            .catch(function(err) {
+                console.log(err);
+            });
+    }
+
+    handleSearchOnClick = (value) => {
         let searchName = '';
-        window.location.search.slice(1).split('&').forEach((value) => {
-            if(value.indexOf('search=') == 0) {
-                searchName = value.replace(/search=/, '');
-            }
-        });
+        if(value) {
+            searchName = value;
+        } else {
+            window.location.search.slice(1).split('&').forEach((value) => {
+                if(value.indexOf('search=') == 0) {
+                    searchName = value.replace(/search=/, '');
+                }
+            });
+            this.requestSearchResult(searchName);
+        }
         console.log(searchName);
         this.setState({
             searchName
         });
     }
 
+    onReflashPage = () => {
+        this.requestSearchResult(this.state.searchName);
+    }
+
     render() {
+        let { searchName } = this.state;
+        let groupObj = this.state.searchResult.group;
+        let group;
+        if(groupObj && groupObj.groupName) {
+            group = <Group 
+                        style={{
+                            marginTop: 20
+                        }}
+                        groupName={groupObj.groupName}
+                        groupEngName={groupObj.groupEngName}
+                        _id={groupObj._id}
+                        groupIconUrl={groupObj.groupIconUrl}
+                        icons={groupObj.icons}
+                        />;
+        }
+        
         return (
             <LayoutMain>
                 <HeaderContainer >
                     <Logo/>
-                    <SearchBar/>
+                    <SearchBar onSearch={this.handleSearchOnClick}/>
                 </HeaderContainer>
                 <ContentContainer >
                     { this.state.fileNotFound ?
                     <FileNotFound /> :
                     <div>
                         <GroupMenu>
-                            <ResultTitle/>
+                            <ResultTitle searchName={searchName}/>
                             <MenuBtnsContainer>
                                 <SelectAll />
                                 <Split />
                                 <OpenFileLocation />
                                 <DownloadBtn />
-                                <MoreMenu />
+                                <MoreMenu reflashPage={this.onReflashPage}/>
                             </MenuBtnsContainer>
                         </GroupMenu>
                         <div className={`group-container`}>
-                            <Group style={{
-                                marginTop: 20
-                            }}/>
+                            {group}
                         </div>
                         <InnerGroupIcon></InnerGroupIcon>
                     </div>}
@@ -74,5 +141,7 @@ class SearchResult extends React.Component {
         );
     }
 }
+
+SearchResult = connect()(SearchResult);
 
 export default SearchResult;

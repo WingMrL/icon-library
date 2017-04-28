@@ -10,9 +10,6 @@ import styles from './SearchBar.less';
 import { Link } from 'react-router-dom';
 import config from '../../../config/config';
 
-let timeout;
-let currentValue;
-
 class SearchBar extends React.Component {
     constructor(props) {
         super(props);
@@ -44,12 +41,27 @@ class SearchBar extends React.Component {
             axios.post(`${config.serverHost}/api/suggest`, data)
                     .then((res) => {
                         if(res.data.code == 0) {
-                            callback(res.data.data);
+                            let data = res.data.data;
+                            let nameArr = data.map(v => v.text);
+                            let nameArrTemp = [];
+                            let indexArr = [];
+                            nameArr.forEach((v, i) => {
+                                if(nameArrTemp.indexOf(v) > -1) {
+                                    indexArr.push(i);
+                                } else {
+                                    nameArrTemp.push(v);
+                                }
+                            });
+                            indexArr.forEach((v) => {
+                                data.splice(v, 1);
+                            })
+                            callback(data);
                         } else if(res.data.code == -1) {
                             self.setState({
                                 data: self.getSearchHistory()
                             });
                         }
+                        // console.log(res);
                     })
                     .catch((err) => {
                         console.log(err);
@@ -84,13 +96,26 @@ class SearchBar extends React.Component {
     handleSearchOnClick = (e) => {
         let { value } = this.state;
         let history = this.getSearchHistory();
-        value = {
-            _id: history.length == 0 ? 1 : history[0]._id + 1,
-            text: value
+        let index = -1;
+        history.forEach((v, i) => {
+            if(v.text == value) {
+                index = i;
+            }
+        });
+        if(index == -1 || history.length == 0) {
+            value = {
+                _id: `id_${Date.now().toString()}`,
+                text: value
+            }
+        } else {
+            value = history.splice(index, 1)[0];
         }
         history.unshift(value);
         history = JSON.stringify(history);
         localStorage.setItem('searchHistory', history);
+        if(this.props.onSearch) {
+            this.props.onSearch(this.state.value);
+        }
     }
 
     handleChange = (value) => {

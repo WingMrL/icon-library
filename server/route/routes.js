@@ -20,6 +20,7 @@ module.exports = function(app) {
     app.get('/api/getLabels', Label.getLabels);
 
     app.post('/api/suggest', search.suggestion);
+    app.post('/api/search', search.search);
 
 
     /* GET home page. */
