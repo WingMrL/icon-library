@@ -8,6 +8,7 @@ import CheckableTag from '../Content/CheckableTag';
 import config from '../../../config/config';
 import axios from 'axios';
 import ClosableTag from '../Content/ClosableTag';
+import { Scrollbars } from 'react-custom-scrollbars';
 
 class UploadModal extends React.Component {
 
@@ -303,16 +304,20 @@ class UploadModal extends React.Component {
                     </Button>
                 ]}
                 >
-                <ul className={`select-container`}>
-                    {uploadIconPreviewList}
-                    <AddFile 
-                        beforeUpload={this.handleBeforeUpload} 
-                        uploadFlag={this.state.uploadFlag}
-                        fileList={this.state.fileList}
-                        removeUploadSuccessFile={this.removeUploadSuccessFile}
-                        groupId={this.props.groupId}
-                        />
-                </ul>
+                
+                    <ul className={`select-container`}>
+                        <Scrollbars>
+                            {uploadIconPreviewList}
+                            <AddFile 
+                                beforeUpload={this.handleBeforeUpload} 
+                                uploadFlag={this.state.uploadFlag}
+                                fileList={this.state.fileList}
+                                removeUploadSuccessFile={this.removeUploadSuccessFile}
+                                groupId={this.props.groupId}
+                                />
+                        </Scrollbars>
+                    </ul>
+                
                 <span className={`split`}></span>
                 {
                     this.state.selectIndex > -1
@@ -351,7 +356,9 @@ class UploadModal extends React.Component {
                             </div>
                         </div>
                         <div className={`labels-container`}>
-                            {checkableLabels}
+                            <Scrollbars>
+                                {checkableLabels}
+                            </Scrollbars>
                         </div>
                     </div>
                     :

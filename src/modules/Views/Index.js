@@ -3,6 +3,7 @@ import React from 'react';
 import LayoutMain from '../Layout/LayoutMain';
 import HeaderContainer from '../Layout/HeaderContainer';
 import ContentContainer from '../Layout/ContentContainer';
+import FooterContainer from '../Layout/FooterContainer';
 
 import Logo from '../Header/Logo';
 import SearchBar from '../Header/SearchBar';
@@ -75,6 +76,8 @@ class Index extends React.Component {
                         onClick={this.handleClick}
                         > 初始化Group数据库 </Button>*/}
                 </ContentContainer>
+                <FooterContainer>
+                </FooterContainer>
             </LayoutMain>
         );
     }

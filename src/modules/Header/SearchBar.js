@@ -9,6 +9,7 @@ const Option = Select.Option;
 import styles from './SearchBar.less';
 import { Link } from 'react-router-dom';
 import config from '../../../config/config';
+import { Scrollbars } from 'react-custom-scrollbars';
 
 class SearchBar extends React.Component {
     constructor(props) {
@@ -42,19 +43,6 @@ class SearchBar extends React.Component {
                     .then((res) => {
                         if(res.data.code == 0) {
                             let data = res.data.data;
-                            let nameArr = data.map(v => v.text);
-                            let nameArrTemp = [];
-                            let indexArr = [];
-                            nameArr.forEach((v, i) => {
-                                if(nameArrTemp.indexOf(v) > -1) {
-                                    indexArr.push(i);
-                                } else {
-                                    nameArrTemp.push(v);
-                                }
-                            });
-                            indexArr.forEach((v) => {
-                                data.splice(v, 1);
-                            })
                             callback(data);
                         } else if(res.data.code == -1) {
                             self.setState({
@@ -150,7 +138,7 @@ class SearchBar extends React.Component {
                     showArrow={false}
                     filterOption={false}
                     onChange={this.handleChange}
-                    className={`asdfaskjdfakshdfkjahsf`}
+                    dropdownClassName={`custom-search-dropdown`}
                     dropdownStyle={{
                         maxHeight: 224
                     }}

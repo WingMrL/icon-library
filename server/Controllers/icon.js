@@ -255,7 +255,7 @@ exports.renameIcon = function(req, res) {
                                      })
                                 .exec()
                                 .then(function(result) {
-                                    console.log(result);
+                                    // console.log(result);
                                     cb(null, '2');
                                 })
                                 .catch(function(err) {
@@ -271,7 +271,7 @@ exports.renameIcon = function(req, res) {
                 });
         }
     ], function(err, result) {
-        console.log(result);
+        // console.log(result);
         res.json({
             code: 0,
             msg: 'ok'

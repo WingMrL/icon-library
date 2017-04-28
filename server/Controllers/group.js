@@ -41,7 +41,7 @@ exports.getGroups = function(req, res) {
 }
 
 exports.getGroup = function(req, res) {
-    let _id = req.query._id;
+    let { currentPage, numbersInPage, _id, iconId } = req.query;
     let options = {
         sort: {
             'meta.updateAt': -1
@@ -64,10 +64,34 @@ exports.getGroup = function(req, res) {
                 if(err) {
                     console.log(err);
                 }
+
+                let jumpToPage;
+                if(iconId) {
+                    let indexOfIdInIcons = -1;
+                    group.icons.forEach(function(v, i) {
+                        if(v._id == iconId) {
+                            indexOfIdInIcons = i;
+                        }
+                    });
+                    indexOfIdInIcons ++; //第一张图和索引是0
+                    jumpToPage = Math.ceil(indexOfIdInIcons / numbersInPage);
+                }
+                
+                let totalIcons = group.icons.length;
+                let totalPages = Math.ceil(totalIcons / numbersInPage);
+                if(totalPages == 0) {
+                    totalPages ++;
+                }
+                let startIndex = (currentPage - 1) * numbersInPage;
+                let endIndex = startIndex + numbersInPage;
+                group.icons = group.icons.slice(startIndex, endIndex);
                 res.json({
                     code: 0,
                     status: 'ok',
-                    group: group
+                    group: group,
+                    totalPages,
+                    totalIcons,
+                    jumpToPage
                 });
             });
     } else {

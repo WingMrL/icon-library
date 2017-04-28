@@ -3,6 +3,7 @@ import React from 'react';
 import LayoutMain from '../Layout/LayoutMain';
 import HeaderContainer from '../Layout/HeaderContainer';
 import ContentContainer from '../Layout/ContentContainer';
+import FooterContainer from '../Layout/FooterContainer';
 
 import Logo from '../Header/Logo';
 import SearchBar from '../Header/SearchBar';
@@ -21,6 +22,8 @@ import config from '../../../config/config';
 import axios from 'axios';
 import { connect } from 'react-redux';
 import { addAllIconsToIcons, removeAllIconsFromIcons } from '../../actions/icons';
+import { removeAllIconsFromSelectedIcons } from '../../actions/selectedIcons';
+import IconPagination from '../Content/IconPagination';
 
 class SearchResult extends React.Component {
 
@@ -30,6 +33,10 @@ class SearchResult extends React.Component {
             fileNotFound: false,
             searchName: '',
             searchResult: {},
+            currentPage: 1,
+            numbersInPage: 32, //每页有多少条
+            totalPages: 1, //总页数
+            totalIcons: 0, //总icon数
         };
     }
 
@@ -40,23 +47,27 @@ class SearchResult extends React.Component {
     componentWillUpdate(nextProps, nextState) {
         // console.log('..........componentWillUpdate', this.state.searchName, nextState.searchName);
         if(this.state.searchName !== nextState.searchName) {
-            this.requestSearchResult(nextState.searchName);
+            this.onReflashPage(nextState.searchName);
         }
     }
 
 
-    requestSearchResult = (searchName) => {
+    requestSearchResult = (searchName, currentPage, numbersInPage) => {
         let self = this;
         let data = {
-            searchName
+            searchName,
+            currentPage,
+            numbersInPage,
         }
         axios.post(`${config.serverHost}/api/search`, data)
             .then(function(result) {
                 if(result.data.code == 0) {
-                    console.log(result);
+                    // console.log(result);
                     self.setState({
                         searchResult: result.data.result,
-                        fileNotFound: false
+                        fileNotFound: false,
+                        totalPages: result.data.totalPages,
+                        totalIcons: result.data.totalIcons,
                     });
                     if(result.data.result.icons.length == 0) {
                         self.setState({
@@ -82,20 +93,34 @@ class SearchResult extends React.Component {
                     searchName = value.replace(/search=/, '');
                 }
             });
-            this.requestSearchResult(searchName);
+            this.onReflashPage(searchName);
         }
-        console.log(searchName);
+        // console.log(searchName);
         this.setState({
             searchName
         });
     }
 
-    onReflashPage = () => {
-        this.requestSearchResult(this.state.searchName);
+    handlePageOnChange = (page, pageSize) => {
+        let { searchName } = this.state;
+        this.props.dispatch(removeAllIconsFromSelectedIcons());
+        this.requestSearchResult(searchName, page, pageSize);
+        this.setState({
+            currentPage: page
+        });
+    }
+
+    onReflashPage = (name) => {
+        let { searchName, currentPage, numbersInPage } = this.state;
+        if(name) {
+            searchName = name;
+        }
+        this.requestSearchResult(searchName, currentPage, numbersInPage);
     }
 
     render() {
-        let { searchName } = this.state;
+        let { searchName, currentPage, totalPages, numbersInPage, totalIcons } = this.state;
+        // console.log(currentPage, totalPages, numbersInPage, totalIcons);
         let groupObj = this.state.searchResult.group;
         let group;
         if(groupObj && groupObj.groupName) {
@@ -135,8 +160,18 @@ class SearchResult extends React.Component {
                             {group}
                         </div>
                         <InnerGroupIcon></InnerGroupIcon>
+                        <IconPagination 
+                            size="small"
+                            currentPage={currentPage}
+                            totalPages={totalPages}
+                            numbersInPage={numbersInPage}
+                            totalIcons={totalIcons}
+                            onChange={this.handlePageOnChange}
+                            />
                     </div>}
                 </ContentContainer>
+                <FooterContainer>
+                </FooterContainer>
             </LayoutMain>
         );
     }

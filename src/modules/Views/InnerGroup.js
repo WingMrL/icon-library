@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import LayoutMain from '../Layout/LayoutMain';
 import HeaderContainer from '../Layout/HeaderContainer';
 import ContentContainer from '../Layout/ContentContainer';
+import FooterContainer from '../Layout/FooterContainer';
 
 import Logo from '../Header/Logo';
 import SearchBar from '../Header/SearchBar';
@@ -19,32 +20,44 @@ import InnerGroupIcon from '../Content/InnerGroupIcon';
 import axios from 'axios';
 import config from '../../../config/config';
 import { addAllIconsToIcons, removeAllIconsFromIcons} from '../../actions/icons';
-import { addIconToSelectedIcons } from '../../actions/selectedIcons';
+import { addIconToSelectedIcons, removeAllIconsFromSelectedIcons } from '../../actions/selectedIcons';
+import IconPagination from '../Content/IconPagination';
 
 class InnerGroup extends React.Component {
 
     constructor(props) {
         super(props);
+        this.iconId; //记录从 搜索结果页 的 打开目标位置 转过来的iconId
+        this.highlightIconId;
         this.state = {
             group: {},
+            currentPage: 1,
+            numbersInPage: 32, //每页有多少条
+            totalPages: 1, //总页数
+            totalIcons: 0, //总icon数
         };
     }
 
     componentWillMount() {
-        this.reflashPage();
+        this.setTargetIconId();
+        this.willReflashPage();
+    }
+
+    setTargetIconId = () => {
+        let self = this;
+        window.location.search.slice(1).split('&').forEach((value) => {
+            if(value.indexOf('iconId=') == 0) {
+                self.iconId = value.replace(/iconId=/, '');
+            }
+        });
     }
 
     highlightTargetIcon = () => {
-        let _id = '';
-        window.location.search.slice(1).split('&').forEach((value) => {
-            if(value.indexOf('_id=') == 0) {
-                _id = value.replace(/_id=/, '');
-            }
-        });
-        if(_id !== '') {
+        let self = this;
+        if(this.highlightIconId !== undefined) {
             let icon;
             this.props.icons.forEach((v) => {
-                if(v._id === _id) {
+                if(v._id === self.highlightIconId) {
                     icon = Object.assign({}, v);
                 }
             });
@@ -54,12 +67,20 @@ class InnerGroup extends React.Component {
         }
     }
 
-    reflashPage = () => {
+    willReflashPage = () => {
+        let { currentPage, numbersInPage } = this.state;
+        this.reflashPage(currentPage, numbersInPage);
+    }
+
+    reflashPage = (currentPage, numbersInPage) => {
         let self = this;
         let url = `${config.serverHost}/api/getGroup`;
         let data = {
             params: {
-                _id: this.props.match.params.groupid
+                _id: this.props.match.params.groupid,
+                currentPage,
+                numbersInPage,
+                iconId: this.iconId
             }
         };
         axios.get(url, data)
@@ -72,10 +93,19 @@ class InnerGroup extends React.Component {
                             groupName: res.data.group.groupName,
                             groupIconUrl: res.data.group.groupIconUrl,
                             groupEngName: res.data.group.groupEngName
-                        }
+                        },
+                        totalPages: res.data.totalPages,
+                        totalIcons: res.data.totalIcons
                     })
-                    self.props.dispatch(addAllIconsToIcons(res.data.group.icons));
-                    self.highlightTargetIcon();
+                    if(res.data.jumpToPage) {
+                        self.highlightIconId = self.iconId;
+                        self.iconId = undefined;
+                        self.handlePageOnChange(res.data.jumpToPage, self.state.numbersInPage);
+                    } else {
+                        self.props.dispatch(addAllIconsToIcons(res.data.group.icons));
+                        self.highlightTargetIcon();
+                    }
+                    
                 }
             }).catch((res) => {
                 console.log(res);
@@ -86,8 +116,16 @@ class InnerGroup extends React.Component {
         this.props.dispatch(removeAllIconsFromIcons());
     }
 
+    handlePageOnChange = (page, pageSize) => {
+        this.props.dispatch(removeAllIconsFromSelectedIcons());
+        this.reflashPage(page, pageSize);
+        this.setState({
+            currentPage: page
+        });
+    }
+
     render() {
-        let { group } = this.state;
+        let { group, currentPage, totalPages, numbersInPage, totalIcons } = this.state;
         return (
             <LayoutMain>
                 <HeaderContainer >
@@ -95,7 +133,7 @@ class InnerGroup extends React.Component {
                     <SearchBar/>
                     <UploadBtn 
                         groupId={this.props.match.params.groupid}
-                        reflashPage={this.reflashPage}
+                        reflashPage={this.willReflashPage}
                         />
                 </HeaderContainer>
                 <ContentContainer >
@@ -108,11 +146,21 @@ class InnerGroup extends React.Component {
                             <SelectAll />
                             <Split />
                             <DownloadBtn />
-                            <MoreMenu reflashPage={this.reflashPage}/>
+                            <MoreMenu reflashPage={this.willReflashPage}/>
                         </MenuBtnsContainer>
                     </GroupMenu>
                     <InnerGroupIcon></InnerGroupIcon>
+                    <IconPagination 
+                        size="small"
+                        currentPage={currentPage}
+                        totalPages={totalPages}
+                        numbersInPage={numbersInPage}
+                        totalIcons={totalIcons}
+                        onChange={this.handlePageOnChange}
+                        />
                 </ContentContainer>
+                <FooterContainer>
+                </FooterContainer>
             </LayoutMain>
         );
     }

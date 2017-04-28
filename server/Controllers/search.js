@@ -71,17 +71,33 @@ exports.suggestion = function(req, res) {
             }
         }, function(err, result) {
             result = result.groups.concat(result.labels, result.icons);
-            console.log(result);
+            // console.log(result);
+            let resultNameArr = result.map(function(v) {
+                return v.text;
+            });
+            let uniqueNameArr = [];
+            let repetitiveIndexes = [];
+            resultNameArr.forEach(function(v, i) {
+                if(uniqueNameArr.indexOf(v) > -1) {
+                    repetitiveIndexes.push(i);
+                } else {
+                    uniqueNameArr.push(v);
+                }
+            });
+            repetitiveIndexes.reverse();
+            repetitiveIndexes.forEach(function(v) {
+                result.splice(v, 1);
+            });
             res.json({
                 code: 0,
-                data: result
+                data: result,
             });
         });
     }
 };
 
 exports.search = function(req, res) {
-    let searchName = req.body.searchName;
+    let { searchName, currentPage, numbersInPage } = req.body;
     let reg = new RegExp(`${searchName}`, 'i');
     serier({
         group: function(callback) {
@@ -197,7 +213,7 @@ exports.search = function(req, res) {
         
         icons = icons.concat(result.icons);
 
-        console.log(icons);
+        // console.log(icons);
         let iconsIdArr = icons.map(function(v) {
             return v._id;
         });
@@ -210,15 +226,26 @@ exports.search = function(req, res) {
                 iconsIdArrTemp.push(v);
             }
         });
+        indexArr.reverse();
         indexArr.forEach(function(v) {
             icons.splice(v, 1);
         });
+        let totalIcons = icons.length;
+        let totalPages = Math.ceil(totalIcons / numbersInPage);
+        if(totalPages == 0) {
+            totalPages ++;
+        }
+        let startIndex = (currentPage - 1) * numbersInPage;
+        let endIndex = startIndex + numbersInPage;
+        icons = icons.slice(startIndex, endIndex);
         res.json({
             code: 0,
             result: {
                 group,
-                icons
-            }
+                icons,
+            },
+            totalPages,
+            totalIcons
         });
     });
 }

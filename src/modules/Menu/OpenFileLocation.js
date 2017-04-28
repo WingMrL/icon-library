@@ -37,7 +37,7 @@ class OpenFileLocation extends React.Component {
                 >
                 <span className={`icon-location icon`}></span>
                 <Link 
-                    to={`/innergroup/${groupId}?_id=${iconId}`} 
+                    to={`/innergroup/${groupId}?iconId=${iconId}`} 
                     disabled={ disabled }
                     className={`${linkClass}`}
                     >

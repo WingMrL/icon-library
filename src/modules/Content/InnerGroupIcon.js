@@ -1,7 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
-import styles from './InnerGroupIcon.css';
 import NormalIcon from './NormalIcon';
 
 class InnerGroupIcon extends React.Component {
@@ -23,7 +22,14 @@ class InnerGroupIcon extends React.Component {
             });
         }
         return (
-            <ul className={styles["icon-container"]}>
+            <ul style={{
+                "display": "flex",
+                "justifyContent": "flex-start",
+                "flexWrap": "wrap",
+                "marginTop": "4px",
+                "width": "1100px",
+                "minHeight": "200px",
+            }}>
                 {normalIconList}
             </ul>
         );
