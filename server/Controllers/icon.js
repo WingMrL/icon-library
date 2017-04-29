@@ -48,7 +48,7 @@ exports.addIcon = function(req, res) {
                                         console.log(err);
                                     }
                                     // 保存label到icon中
-                                    icon.labels.push(label._id);
+                                    icon.labels.addToSet(label._id);
                                     icon.save(function(err, icon) {
                                         if(err) {
                                             console.log(err);
@@ -66,7 +66,7 @@ exports.addIcon = function(req, res) {
                                         console.log(err);
                                     }
                                     // 保存label到icon中
-                                    icon.labels.push(label._id);
+                                    icon.labels.addToSet(label._id);
                                     icon.save(function(err, icon) {
                                         if(err) {
                                             console.log(err);

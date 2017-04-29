@@ -4,7 +4,6 @@
   "private": true,
   "scripts": {
     "startbe": "node ./bin/server",
-    "startfe": "node ./bin/www",
     "dev": "webpack-dev-server --config webpack.config.dev.js",
     "build": "webpack --config webpack.config.pro.js"
   },
