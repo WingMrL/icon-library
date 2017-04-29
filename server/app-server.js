@@ -47,25 +47,9 @@ app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, '..', 'dist')));
-app.use(express.static(path.join(__dirname, '..', 'dist', 'upload')));
-
-
-// //设置跨域访问
-// app.all('*', function(req, res, next) {
-//     res.header("Access-Control-Allow-Origin", "*");
-//     // res.header("Access-Control-Allow-Headers", "X-Requested-With");
-//     // res.header("Access-Control-Allow-Headers", "Content-Type");
-//     res.header("Access-Control-Allow-Headers", "*");
-//     res.header("Access-Control-Allow-Methods","PUT,POST,GET,DELETE,OPTIONS");
-//     res.header("X-Powered-By",' 3.2.1');
-//     // res.header("Content-Type", "application/json;charset=utf-8");
-//     next();
-// });
-
-// app.options('/*', function(req, res, next) {
-//   res.json({status:'OK'});
-// });
+var oneYear = 60 * 1000 * 60 * 24 * 365;
+app.use(express.static(path.join(__dirname, '..', 'dist'), {maxAge: oneYear}));
+app.use(express.static(path.join(__dirname, '..', 'dist', 'upload'), {maxAge: oneYear}));
 
 //设置跨域访问 也可以使用cors中间件
 app.all('*', function(req, res, next) {

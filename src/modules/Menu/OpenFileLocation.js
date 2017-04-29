@@ -51,7 +51,7 @@ class OpenFileLocation extends React.Component {
 const mapStateToProps = (state, ownProps) => {
     return {
         selectedIcons: state.selectedIcons,
-        disabled: state.selectedIcons.length == 0
+        disabled: state.selectedIcons.length == 1 ? false : true,
     }
 }
 

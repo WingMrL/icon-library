@@ -91,8 +91,10 @@ class SearchResult extends React.Component {
             window.location.search.slice(1).split('&').forEach((value) => {
                 if(value.indexOf('search=') == 0) {
                     searchName = value.replace(/search=/, '');
+                    searchName = decodeURI(searchName);
                 }
             });
+            
             this.onReflashPage(searchName);
         }
         // console.log(searchName);
