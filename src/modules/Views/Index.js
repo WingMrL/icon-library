@@ -107,8 +107,8 @@ class Index extends React.Component {
             console.warn(res);
         });
         axios.post('http://localhost:3000/api/addGroup', {
-            groupName: "希沃远程教学Net",
-            groupIconUrl: "http://localhost:3000/assets/images/group-logo-希沃远程教学Net.png",
+            groupName: "希沃远程教学Net",
+            groupIconUrl: "http://localhost:3000/assets/images/group-logo-希沃远程教学Net.png",
             groupEngName: "SeewoNet",
         }).then(function(res) {
             console.log(res);
@@ -116,7 +116,7 @@ class Index extends React.Component {
             console.warn(res);
         });
         axios.post('http://localhost:3000/api/addGroup', {
-            groupName: "希沃OS定制版",
+            groupName: "希沃OS定制版",
             groupIconUrl: "http://localhost:3000/assets/images/group-logo-希沃OS定制版.png",
             groupEngName: "SeewoOSCustom",
         }).then(function(res) {
@@ -125,7 +125,7 @@ class Index extends React.Component {
             console.warn(res);
         });
         axios.post('http://localhost:3000/api/addGroup', {
-            groupName: "希沃OS公用版",
+            groupName: "希沃OS公用版",
             groupIconUrl: "http://localhost:3000/assets/images/group-logo-希沃OS公用版.png",
             groupEngName: "SeewoOSPublic",
         }).then(function(res) {
