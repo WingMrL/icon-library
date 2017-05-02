@@ -23,6 +23,7 @@
     "cookie-parser": "~1.4.3",
     "css-loader": "^0.28.0",
     "debug": "~2.6.0",
+    "ejs": "^2.5.6",
     "express": "~4.14.1",
     "extract-text-webpack-plugin": "^2.1.0",
     "fetch-jsonp": "^1.0.6",
