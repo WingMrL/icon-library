@@ -15,7 +15,7 @@ exports.addIcon = function(req, res) {
     let labels = labelsString == '' ? [] : labelsString.split(',');
     let iconObj = {
         fileName: fileName,
-        iconUrl: path.join(groupId, fileName),
+        iconUrl: groupId + "/" + fileName,
         width: req.body.width,
         height: req.body.height,
         group: groupId,

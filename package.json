@@ -8,7 +8,7 @@
     "build": "webpack --config webpack.config.pro.js"
   },
   "dependencies": {
-    "antd": "^2.9.1",
+    "antd": "2.9.1",
     "async": "^2.3.0",
     "axios": "^0.16.1",
     "axios-fileupload": "0.0.1",

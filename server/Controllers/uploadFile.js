@@ -15,7 +15,7 @@ var createFolder = function(folder){
 var storage = multer.diskStorage({
     destination: function (req, file, cb) {
         let groupId = req.body.groupId;
-        let folder = path.join(config.uploadPath, groupId);
+        let folder = config.uploadPath + '/' + groupId; 
         createFolder(folder);
         cb(null, folder);    // 保存的路径，备注：需要自己创建
     },
