@@ -7,7 +7,11 @@ var createFolder = function(folder){
     try{
         fs.accessSync(folder); 
     }catch(e){
-        fs.mkdirSync(folder);
+        try {
+            fs.mkdirSync(folder);
+        } catch (e) {
+            console.log(e);
+        }
     }  
 };
 

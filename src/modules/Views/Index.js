@@ -89,8 +89,8 @@ class Index extends React.Component {
             console.warn(res);
         });
         axios.post('http://localhost:3000/api/addGroup', {
-            groupName: "希活授课助手Link",
-            groupIconUrl: "assets/images/group-logo-希活授课助手Link.png",
+            groupName: "希沃授课助手Link",
+            groupIconUrl: "assets/images/group-logo-希沃授课助手Link.png",
             groupEngName: "SeewoLink",
         }).then(function(res) {
             console.log(res);
