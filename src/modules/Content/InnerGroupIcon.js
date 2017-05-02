@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
-import NormalIcon from './NormalIcon';
+import NormalIcon from './NormalIcon';
 
 class InnerGroupIcon extends React.Component {
 
