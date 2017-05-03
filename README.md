@@ -6,7 +6,7 @@
 
 ### 3. 在config/config.js下配置服务器与数据库相关信息
 
-### 4. npm run dev
+### 4. npm run dev（有可能需要把文件夹的名字iiiicccc..改成icon-library才行）
 
 ### 5. 另开终端，npm run server
 
