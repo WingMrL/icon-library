@@ -3,6 +3,16 @@ var path = require('path');
 var config = require('../../config/config');
 var fs = require('fs');
 
+try{
+    fs.accessSync(config.uploadPath); 
+}catch(e){
+    try {
+        fs.mkdirSync(config.uploadPath);
+    } catch (e) {
+        console.log(e);
+    }
+} 
+
 var createFolder = function(folder){
     try{
         fs.accessSync(folder); 
