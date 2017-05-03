@@ -14,6 +14,9 @@ if(DATABASE_USER !== '' && DATABASE_PASSWORD !== '') {
 }
 
 let serverHost = 'http://' + SERVER_HOST + ':' + SERVER_PORT;
+if(SERVER_PORT === '80') {
+    serverHost = serverHost.replace(`:${SERVER_PORT}`, '');
+}
 let dbUrl = 'mongodb://' + userAndPass + DATABASE_HOST + ':' + DATABASE_PORT + '/' + DATABASE_NAME;
 
 let config = {

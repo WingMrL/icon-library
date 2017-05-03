@@ -43,7 +43,7 @@ class Index extends React.Component {
 
     handleClick(e) {
         console.log(12341234);
-        axios.post('http://localhost:3000/api/addGroup', {
+        axios.post(`${config.serverHost}/api/addGroup`, {
             groupName: "EasiNote5",
             groupIconUrl: "assets/images/group-logo-EasiNote5.png",
             groupEngName: "EasiNote5",
@@ -52,7 +52,7 @@ class Index extends React.Component {
         }).catch(function(res) {
             console.warn(res);
         });
-        axios.post('http://localhost:3000/api/addGroup', {
+        axios.post(`${config.serverHost}/api/addGroup`, {
             groupName: "班级优化大师大板端",
             groupIconUrl: "assets/images/group-logo-班级优化大师大板端.png",
             groupEngName: "CarePad",
@@ -61,7 +61,7 @@ class Index extends React.Component {
         }).catch(function(res) {
             console.warn(res);
         });
-        axios.post('http://localhost:3000/api/addGroup', {
+        axios.post(`${config.serverHost}/api/addGroup`, {
             groupName: "班级优化大师手机端",
             groupIconUrl: "assets/images/group-logo-班级优化大师手机端.png",
             groupEngName: "CarePhone",
@@ -70,7 +70,7 @@ class Index extends React.Component {
         }).catch(function(res) {
             console.warn(res);
         });
-        axios.post('http://localhost:3000/api/addGroup', {
+        axios.post(`${config.serverHost}/api/addGroup`, {
             groupName: "班级优化大师PC端",
             groupIconUrl: "assets/images/group-logo-班级优化大师PC端.png",
             groupEngName: "CarePC",
@@ -79,7 +79,7 @@ class Index extends React.Component {
         }).catch(function(res) {
             console.warn(res);
         });
-        axios.post('http://localhost:3000/api/addGroup', {
+        axios.post(`${config.serverHost}/api/addGroup`, {
             groupName: "视频展台Camera",
             groupIconUrl: "assets/images/group-logo-视频展台Camera.png",
             groupEngName: "Carema",
@@ -88,7 +88,7 @@ class Index extends React.Component {
         }).catch(function(res) {
             console.warn(res);
         });
-        axios.post('http://localhost:3000/api/addGroup', {
+        axios.post(`${config.serverHost}/api/addGroup`, {
             groupName: "希沃授课助手Link",
             groupIconUrl: "assets/images/group-logo-希沃授课助手Link.png",
             groupEngName: "SeewoLink",
@@ -97,7 +97,7 @@ class Index extends React.Component {
         }).catch(function(res) {
             console.warn(res);
         });
-        axios.post('http://localhost:3000/api/addGroup', {
+        axios.post(`${config.serverHost}/api/addGroup`, {
             groupName: "希沃学院",
             groupIconUrl: "assets/images/group-logo-希沃学院.png",
             groupEngName: "SeewoCollege",
@@ -106,7 +106,7 @@ class Index extends React.Component {
         }).catch(function(res) {
             console.warn(res);
         });
-        axios.post('http://localhost:3000/api/addGroup', {
+        axios.post(`${config.serverHost}/api/addGroup`, {
             groupName: "希沃远程教学Net",
             groupIconUrl: "assets/images/group-logo-希沃远程教学Net.png",
             groupEngName: "SeewoNet",
@@ -115,7 +115,7 @@ class Index extends React.Component {
         }).catch(function(res) {
             console.warn(res);
         });
-        axios.post('http://localhost:3000/api/addGroup', {
+        axios.post(`${config.serverHost}/api/addGroup`, {
             groupName: "希沃OS定制版",
             groupIconUrl: "assets/images/group-logo-希沃OS定制版.png",
             groupEngName: "SeewoOSCustom",
@@ -124,7 +124,7 @@ class Index extends React.Component {
         }).catch(function(res) {
             console.warn(res);
         });
-        axios.post('http://localhost:3000/api/addGroup', {
+        axios.post(`${config.serverHost}/api/addGroup`, {
             groupName: "希沃OS公用版",
             groupIconUrl: "assets/images/group-logo-希沃OS公用版.png",
             groupEngName: "SeewoOSPublic",
