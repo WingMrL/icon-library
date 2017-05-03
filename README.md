@@ -16,4 +16,4 @@
 
 ### 8. npm run build
 
-### 9. serverHost:serverPort，（serverHost和serverPort是在config里面填的）, Enjoy Yourself !
+### 9. 浏览器输入：serverHost:serverPort，（serverHost和serverPort是在config里面填的）, Enjoy Yourself !
