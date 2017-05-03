@@ -16,4 +16,4 @@
 
 ### 8. npm run build
 
-### 9. localhost:3000，（默认）, Enjoy Yourself !
+### 9. serverHost:serverPort，（serverHost和serverPort是在config里面填的）, Enjoy Yourself !
