@@ -1,7 +1,7 @@
 let path = require('path');
 
 const SERVER_HOST = '192.168.0.102';
-const SERVER_PORT = '3000';
+const SERVER_PORT = '4000';
 const DATABASE_HOST = '192.168.0.102';
 const DATABASE_PORT = '27017';
 const DATABASE_NAME = 'icon';
@@ -21,6 +21,7 @@ let config = {
     dbUrl,
     fileSuffixReg: /\.(png|jpg|svg|jpeg)$/i,
     uploadPath: path.join(__dirname, '..', 'dist', 'upload'),
+    serverPort: SERVER_PORT,
 }
 
 module.exports = config;
