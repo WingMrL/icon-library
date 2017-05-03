@@ -10,7 +10,7 @@
 
 ### 5. 另开终端，npm run server
 
-### 6. 打开localhost:3000，（默认），初始化groups
+### 6. 打开localhost:8080，（默认），初始化groups
 
 ### 7. 然后修改src/modules/Views/Index.js，把初始化groups的代码去掉
 
