@@ -14,36 +14,13 @@ import axios from 'axios';
 
 import config from '../../../config/config';
 
-class Index extends React.Component {
 
-    constructor(props) {
-        super(props);
-
-        this.state = {
-            groups: []
-        }
-        // this.handleClick = this.handleClick.bind(this);
-    }
-
-    
-    componentWillMount() {
-        let self = this;
-        axios.get(`${config.serverHost}/api/getGroups`)
-            .then((res) => {
-                if(res.status == 200 && res.data.code == 0) {
-                    self.setState({
-                        groups: res.data.groups
-                    })
-                }
-            }).catch((res) => {
-
-            });
-    }
-    
-
-    handleClick(e) {
-        console.log(12341234);
-        axios.post(`${config.serverHost}/api/addGroup`, {
+/**
+ * @description 初始化group数据库集合
+ * 
+ */
+let initGroup = () => {
+    axios.post(`${config.serverHost}/api/addGroup`, {
             groupName: "EasiNote5",
             groupIconUrl: "assets/images/group-logo-EasiNote5.png",
             groupEngName: "EasiNote5",
@@ -133,6 +110,141 @@ class Index extends React.Component {
         }).catch(function(res) {
             console.warn(res);
         });
+};
+
+
+/**
+ * @description 初始化label数据库集合
+ * 
+ */
+let initLabel = () => {
+    axios.post(`${config.serverHost}/api/addLabel`, {
+        labelName: '16x16',
+        classification: '尺寸'
+    }).then((result) => {
+        console.log(result);
+    }).catch((err) => {
+        console.log(err);
+    });
+    axios.post(`${config.serverHost}/api/addLabel`, {
+        labelName: '24x24',
+        classification: '尺寸'
+    }).then((result) => {
+        console.log(result);
+    }).catch((err) => {
+        console.log(err);
+    });
+    axios.post(`${config.serverHost}/api/addLabel`, {
+        labelName: '32x32',
+        classification: '尺寸'
+    }).then((result) => {
+        console.log(result);
+    }).catch((err) => {
+        console.log(err);
+    });
+    axios.post(`${config.serverHost}/api/addLabel`, {
+        labelName: '48x48',
+        classification: '尺寸'
+    }).then((result) => {
+        console.log(result);
+    }).catch((err) => {
+        console.log(err);
+    });
+    axios.post(`${config.serverHost}/api/addLabel`, {
+        labelName: '64x64',
+        classification: '尺寸'
+    }).then((result) => {
+        console.log(result);
+    }).catch((err) => {
+        console.log(err);
+    });
+    axios.post(`${config.serverHost}/api/addLabel`, {
+        labelName: '其他',
+        classification: '尺寸'
+    }).then((result) => {
+        console.log(result);
+    }).catch((err) => {
+        console.log(err);
+    });
+    axios.post(`${config.serverHost}/api/addLabel`, {
+        labelName: 'PC',
+        classification: '平台'
+    }).then((result) => {
+        console.log(result);
+    }).catch((err) => {
+        console.log(err);
+    });
+    axios.post(`${config.serverHost}/api/addLabel`, {
+        labelName: '移动',
+        classification: '平台'
+    }).then((result) => {
+        console.log(result);
+    }).catch((err) => {
+        console.log(err);
+    });
+    axios.post(`${config.serverHost}/api/addLabel`, {
+        labelName: 'OS海内',
+        classification: '平台'
+    }).then((result) => {
+        console.log(result);
+    }).catch((err) => {
+        console.log(err);
+    });
+    axios.post(`${config.serverHost}/api/addLabel`, {
+        labelName: 'OS海外',
+        classification: '平台'
+    }).then((result) => {
+        console.log(result);
+    }).catch((err) => {
+        console.log(err);
+    });
+    axios.post(`${config.serverHost}/api/addLabel`, {
+        labelName: '外协',
+        classification: '平台'
+    }).then((result) => {
+        console.log(result);
+    }).catch((err) => {
+        console.log(err);
+    });
+};
+
+
+/**
+ * 首页
+ * 
+ * @class Index
+ * @extends {React.Component}
+ */
+class Index extends React.Component {
+
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            groups: []
+        }
+        // this.handleClick = this.handleClick.bind(this);
+    }
+
+    
+    componentWillMount() {
+        let self = this;
+        axios.get(`${config.serverHost}/api/getGroups`)
+            .then((res) => {
+                if(res.status == 200 && res.data.code == 0) {
+                    self.setState({
+                        groups: res.data.groups
+                    })
+                }
+            }).catch((res) => {
+
+            });
+    }
+    
+
+    handleClick(e) {
+        initGroup();
+        initLabel();
     }
 
     render() {
@@ -156,7 +268,7 @@ class Index extends React.Component {
                     {groupList}
                     {/*<Button 
                         onClick={this.handleClick}
-                        > 初始化Group数据库 </Button>*/}
+                        > 初始化数据库 </Button>*/}
                 </ContentContainer>
                 <FooterContainer>
                 </FooterContainer>

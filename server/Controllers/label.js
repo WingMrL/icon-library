@@ -4,7 +4,7 @@ let Label = mongoose.model('Label');
 
 exports.addLabel = function(req, res) {
     let _label = req.body;
-    let label = new Icon(_label);
+    let label = new Label(_label);
 
     label.save(function(err, label) {
         if(err) {
@@ -19,15 +19,17 @@ exports.addLabel = function(req, res) {
 };
 
 exports.getLabels = function(req, res) {
-    Label.fetch(function(err, labels) {
-        if(err) {
+    Label.find({})
+        .sort('meta.createAt')
+        .exec()
+        .then((labels) => {
+            res.json({
+                code: 0,
+                status: 'ok',
+                labels: labels
+            });
+        })
+        .catch((err) => {
             console.log(err);
-        }
-
-        res.json({
-            code: 0,
-            status: 'ok',
-            labels: labels
         });
-    });
 }

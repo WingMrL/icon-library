@@ -22,6 +22,8 @@ class UploadModal extends React.Component {
             labels: [],
             selectedLabels: [],
             labelInputEditable: false,
+            wrongFileNameFlag: false,  // 是否为文件名称错误，判断是否添加“红色”样式的class
+            wrongLabelsFlag: false, // 是否为标签错误，判断是否添加“红色”样式的class
         };
         this.errorUploadCount = 0;
     }
@@ -64,20 +66,76 @@ class UploadModal extends React.Component {
         }
     }
     
-    
+    /**
+     * @description Modal的关闭事件
+     * @memberof UploadModal
+     */
     handleCancel = () => {
         this.props.onCancel();
+        this.setWrongFileNameFlag(false);
+        this.setWrongLabelsFlag(false);
     }
 
+    /**
+     * @description 全部上传btn的点击事件
+     * @memberof UploadModal
+     */
     handleOk = () => {
+        let { fileList } = this.state;
+        let unNameFileIndex = -1;
+        let noLabelsFileIndex = -1;
+        for(let i = 0, len = fileList.length; i < len; i ++) {
+            if(fileList[i].filename.indexOf('.') == 0) {
+                unNameFileIndex = i;
+                break;
+            }
+            if(fileList[i].labels.length == 0) {
+                noLabelsFileIndex = i;
+                break;
+            }
+        }
+        if(unNameFileIndex != -1) {
+            this.setSelectedIndex(unNameFileIndex);
+            this.setWrongFileNameFlag(true);
+        } else if(noLabelsFileIndex != -1) {
+            this.setSelectedIndex(noLabelsFileIndex);
+            this.setWrongLabelsFlag(true);
+        } else {
+            this.setUploadFlag(true);
+        }
+    }
+
+
+    /**
+     * @description 设置标签是否错误，判断是否添加“红色”样式的class
+     * @param {Boolean} flag - true则显示“红色”样式
+     * @memberof UploadModal
+     */
+    setWrongFileNameFlag = (flag) => {
         this.setState({
-            uploadFlag: true
+            wrongFileNameFlag: flag
         });
     }
 
+    /**
+     * @description 设置文件名称是否错误，判断是否添加“红色”样式的class
+     * @param {Boolean} flag - true则显示“红色”样式
+     * @memberof UploadModal
+     */
+    setWrongLabelsFlag = (flag) => {
+        this.setState({
+            wrongLabelsFlag: flag
+        });
+    }
+
+    /**
+     * @description 上传的暂停flag
+     * @param {Boolean} flag - true为上传,false为暂停
+     * @memberof UploadModal
+     */
     setUploadFlag = (flag) => {
         this.setState({
-            uploadFlag: false
+            uploadFlag: flag
         });
     }
 
@@ -95,7 +153,9 @@ class UploadModal extends React.Component {
         } else {
             //最后一下上传完，把uploadFlag设回false
             if(this.state.fileList.length == this.errorUploadCount + 1) {
-                this.setUploadFlag();
+                this.setUploadFlag(false);
+                this.setWrongFileNameFlag(false);
+                this.setWrongLabelsFlag(false);
                 this.setSelectedIndex(-1);
                 this.props.reflashPage();
             }
@@ -151,10 +211,10 @@ class UploadModal extends React.Component {
     handelNameInputBlur = (e) => {
         let name = e.target.value;
         let suffix = this.state.nameInputValue.match(config.fileSuffixReg)[0];
-        if(name == '') {
-            message.warning("名称为空则使用原名", 2);
-            return;
-        } else {
+        // if(name == '') {
+        //     message.warning("名称为空则使用原名", 2);
+        //     return;
+        // } else {
             let index = this.state.selectIndex;
             let fileList = [...this.state.fileList];
             // let file = Object.assign({}, this.state.fileList[index]);
@@ -165,7 +225,7 @@ class UploadModal extends React.Component {
             this.setState({
                 fileList
             })
-        }
+        // }
     }
 
     handleIconPreviewOnDelete = (index) => {
@@ -210,10 +270,18 @@ class UploadModal extends React.Component {
     }
 
     handleLabelContainerClick = (e) => {
-        this.labelInput.focus();
-        this.setState({
-            labelInputEditable: true
-        })
+        // this.labelInput.focus();
+        // this.setState({
+        //     labelInputEditable: true
+        // })
+    }
+
+    /**
+     * @description 图片名称输入框onFocus
+     * @memberof UploadModal
+     */
+    handlenameInputOnFocus = () => {
+        this.setWrongFileNameFlag(false);
     }
 
     handleCheckableTagChange = (checked, labelName) => {
@@ -237,12 +305,14 @@ class UploadModal extends React.Component {
             selectedLabels,
             labelInputEditable: false
         });
+        this.setWrongLabelsFlag(false);
     }
 
     render() {
         // console.log(this.state.fileList);
         // console.log(this.props.groupId);
         // console.log(this.state.fileList);
+        let { wrongFileNameFlag, wrongLabelsFlag } = this.state;
         
         // 文件名 input
         let nameInputValue = this.state.nameInputValue.replace(config.fileSuffixReg, '');
@@ -272,19 +342,32 @@ class UploadModal extends React.Component {
         }) ;
         // console.log(labelInputTags);
 
-        let checkableLabels = this.state.labels.map((value, index) => {
-            return  <CheckableTag
+        let sizeLabels = [];
+        let platformLabels = [];
+        this.state.labels.forEach((value, index) => {
+            if(value.classification == '平台') {
+                platformLabels.push(<CheckableTag
                         key={`no.${index}`}
                         onChange={this.handleCheckableTagChange}
                         checked={this.state.selectedLabels.indexOf(value.labelName) > -1}
                         >
                         {value.labelName}
-                    </CheckableTag>
+                    </CheckableTag>);
+            } else if (value.classification == '尺寸') {
+                sizeLabels.push(<CheckableTag
+                        key={`no.${index}`}
+                        onChange={this.handleCheckableTagChange}
+                        checked={this.state.selectedLabels.indexOf(value.labelName) > -1}
+                        >
+                        {value.labelName}
+                    </CheckableTag>);
+            }
+            
         });
 
         // console.log(this.state.labelInputEditable,this.state.selectedLabels.length == 0);
         let labelInputPlaceHolder = (this.state.labelInputEditable 
-                                    || this.state.selectedLabels.length == 0) ? '选择以下标签，或手动输入按回车确定' : '';
+                                    || this.state.selectedLabels.length == 0) ? '请根据格式，选择以下标签' : '';
 
         let  labelContainerStyle = {
             display: this.state.labelInputEditable ? 'none' : 'block'
@@ -295,7 +378,6 @@ class UploadModal extends React.Component {
                 visible={this.props.visible}
                 cancelText="取消"
                 okText="全部上传"
-                onOk={this.handleOk}
                 onCancel={this.handleCancel}
                 className={`custom-upload-modal-container`}
                 footer={[
@@ -312,6 +394,7 @@ class UploadModal extends React.Component {
                                 beforeUpload={this.handleBeforeUpload} 
                                 uploadFlag={this.state.uploadFlag}
                                 fileList={this.state.fileList}
+                                setUploadFlag={this.setUploadFlag}
                                 removeUploadSuccessFile={this.removeUploadSuccessFile}
                                 groupId={this.props.groupId}
                                 />
@@ -327,23 +410,24 @@ class UploadModal extends React.Component {
                             <label className={`label-text`}>名称：</label>
                             <input 
                                 type="text" 
-                                className={`input`} 
+                                className={`input ${wrongFileNameFlag ? 'wrong-input' : ''}`} 
                                 placeholder="这个文件的名字" 
                                 value={nameInputValue} 
                                 onChange={this.handleNameInputChange}
                                 onBlur={this.handelNameInputBlur}
+                                onFocus={this.handlenameInputOnFocus}
                                 />
                         </div>
                         <div className={`icon-label-container`}>
                             <div className={`label-text-container`}>
                                 <label className={`label-text`}>标签：
-                                    <span className={`not-must-input`}>(非必填)</span>
+                                    <span className={`not-must-input`}>(必填)</span>
                                 </label>
                             </div>
                             <input 
                                 ref={ref => this.labelInput = ref}
                                 type="text" 
-                                className={`input`} 
+                                className={`input  ${wrongLabelsFlag ? 'wrong-input' : ''}`} 
                                 placeholder={labelInputPlaceHolder}
                                 onKeyUp={this.handleLabelInputKeyUp}
                                 />
@@ -356,9 +440,19 @@ class UploadModal extends React.Component {
                             </div>
                         </div>
                         <div className={`labels-container`}>
-                            <Scrollbars>
-                                {checkableLabels}
-                            </Scrollbars>
+                            <div className={`size-label`}>
+                                <span>尺寸：</span>
+                                <Scrollbars>
+                                    {sizeLabels}
+                                </Scrollbars>
+                            </div>
+                            <div className={`platform-label`}>
+                                <span>平台：</span>
+                                <Scrollbars>
+                                    {platformLabels}
+                                </Scrollbars>
+                            </div>
+                            
                         </div>
                     </div>
                     :

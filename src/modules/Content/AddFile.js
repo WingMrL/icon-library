@@ -10,11 +10,12 @@ import defaultRequest from '../../utils/request';
 
 class AddFile extends React.Component {
 
+    
+
     constructor(props) {
         super(props);
+        // this.uploadCount = -1;
     }
-
-
 
     handleBeforeUpload = (file, fileList) => {
         let self = this;
@@ -44,21 +45,43 @@ class AddFile extends React.Component {
 
     handleCustomRequest = (obj) => {
         let self = this;
+
+        // // 一次上传可能会同时上传多张图片，这个方法可能被执行多次
+        // // uploadCount为-1的时候代表第一次执行，初始化上传数量
+        // if(this.uploadCount == -1) {
+        //     this.uploadCount = this.props.fileList.length;
+        // }
         this.props.fileList.forEach((value) => {
             if(value.uid == obj.file.uid) {
-                let file = obj.file;
-                obj.data = {
-                    filename: file.filename,
-                    width: file.width,
-                    height: file.height,
-                    labels: [...file.labels],
-                    size: file.size,
-                    type: file.type,
-                    uid: file.uid,
-                    groupId: self.props.groupId
-                }
-                // debugger;
-                defaultRequest(obj);
+
+                // if(obj.file.filename.indexOf('.') == 0) { // 文件名为空，不上传
+                    
+                // } else if (obj.file.labels.length == 0) { // 标签为空，不上传
+
+                // } else { // 上传
+                    let file = obj.file;
+                    obj.data = {
+                        filename: file.filename,
+                        width: file.width,
+                        height: file.height,
+                        labels: [...file.labels],
+                        size: file.size,
+                        type: file.type,
+                        uid: file.uid,
+                        groupId: self.props.groupId
+                    }
+                    // debugger;
+                    defaultRequest(obj);
+                // }
+
+                // // 计算还剩多少张还没上传，这里只计算是否已经进行上传操作
+                // // 不管是否上传成功
+                // if(this.uploadCount == 1) { // 最后一张
+                //     this.uploadCount = -1;
+                //     self.props.setUploadFlag(false);
+                // } else {
+                //     this.uploadCount --;
+                // }
             }
         })
     }

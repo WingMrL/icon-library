@@ -4,6 +4,7 @@ const ObjectId = Schema.Types.ObjectId
 
 let LabelSchema = new Schema({
   labelName: String,
+  classification: String,
   icons: [{
     type: ObjectId,
     ref: 'Icon',
