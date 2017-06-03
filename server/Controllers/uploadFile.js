@@ -3,6 +3,8 @@ var path = require('path');
 var config = require('../../config/config');
 var fs = require('fs');
 
+// 若config.uploadPath的路径不存在，
+// 先新建文件夹：upload
 try{
     fs.accessSync(config.uploadPath); 
 }catch(e){
@@ -13,6 +15,7 @@ try{
     }
 } 
 
+// 根据groupId来创建“组”的文件夹
 var createFolder = function(folder){
     try{
         fs.accessSync(folder); 

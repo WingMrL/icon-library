@@ -30,8 +30,7 @@ GroupSchema.pre('save', function(next) {
   else {
     this.meta.updateAt = Date.now()
   }
-
-  next()
+  next();
 })
 
 GroupSchema.statics = {

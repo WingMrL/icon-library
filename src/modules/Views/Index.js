@@ -154,9 +154,9 @@ class Index extends React.Component {
                 </HeaderContainer>
                 <ContentContainer>
                     {groupList}
-                    <Button 
+                    {/*<Button 
                         onClick={this.handleClick}
-                        > 初始化Group数据库 </Button>
+                        > 初始化Group数据库 </Button>*/}
                 </ContentContainer>
                 <FooterContainer>
                 </FooterContainer>

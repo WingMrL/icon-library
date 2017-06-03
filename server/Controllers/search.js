@@ -14,6 +14,7 @@ exports.suggestion = function(req, res) {
             data: []
         });
     } else {
+        // 搜索建议必须是以搜索词开头的的模糊搜索
         let reg = new RegExp(`^${searchName}`, 'i');
         serier({
             groups: function(callback) {
@@ -98,6 +99,7 @@ exports.suggestion = function(req, res) {
 
 exports.search = function(req, res) {
     let { searchName, currentPage, numbersInPage } = req.body;
+    // 模糊搜索
     let reg = new RegExp(`${searchName}`, 'i');
     serier({
         group: function(callback) {
@@ -186,18 +188,24 @@ exports.search = function(req, res) {
                 });
         },
     }, function(err, result) {
-        let icons = [];
-        let group = {};
-        let iconsInGroup;
+        let icons = []; // 要给前端显示的所有icons
+        let group = {}; // 要给前端显示的组对象
+        let iconsInGroup; // 组内的icons， 只包含iconUrl字段
+
+        // 如果有groupName，则查找到了group
         if(result.group.groupName) {
+
+            // 搜索到的组，组里面的所有icons都要显示在搜索结果中
             icons = icons.concat(result.group.icons);
+
+            // 前端显示组对象只要显示前9个icons，并且每个icon只要包含iconUrl就可以了。
             iconsInGroup = result.group.icons.slice(0, 9).map(function(value) {
                 return {
                     _id: value._id,
                     iconUrl: value.iconUrl
                 }
             });
-            group = {
+            group = { // 重新封装group对象
                 _id: result.group._id,
                 groupName: result.group.groupName,
                 groupEngName: result.group.groupEngName,
@@ -206,14 +214,16 @@ exports.search = function(req, res) {
                 meta: result.group.meta
             };
         }
+
+        // 如果有搜索到标签，则把标签里的图标添加到要显示的icons里面
         if(result.label.labelName) {
             icons = icons.concat(result.label.icons);
         }
 
-        
+        // 把模糊搜索到的图标添加到icons里
         icons = icons.concat(result.icons);
 
-        // console.log(icons);
+        // 分页处理
         let iconsIdArr = icons.map(function(v) {
             return v._id;
         });

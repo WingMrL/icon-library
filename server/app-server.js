@@ -10,10 +10,11 @@ var ejs = require('ejs');
 var fs = require('fs');
 var config = require('../config/config');
 
+// 连接数据库
 mongoose.connect(config.dbUrl);
 
-// models loading
-var models_path = path.join(__dirname, 'Models');
+// models loading  递加加载某文件目录中的模块
+var models_path = path.join(__dirname, 'Models'); // 文件目录的路径
 var walk = function(path) {
   fs
     .readdirSync(path)
@@ -47,11 +48,15 @@ app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
+
+// 浏览器缓存
 var oneYear = 60 * 1000 * 60 * 24 * 365;
 app.use(express.static(path.join(__dirname, '..', 'dist'), {maxAge: oneYear}));
 app.use(express.static(path.join(__dirname, '..', 'dist', 'upload'), {maxAge: oneYear}));
 
-//设置跨域访问 也可以使用cors中间件
+//设置跨域访问 也可以使用cors中间件, 只在开发时用，
+//因为前端的服务器(localhost:8080)和后台的服务器(localhost:3000)
+//在请求时会产生跨域问题
 app.all('*', function(req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
     res.header("Access-Control-Allow-Headers", 'Content-Type, Content-Length, Authorization, Accept, X-Requested-With');
@@ -68,7 +73,7 @@ app.all('*', function(req, res, next) {
     }
 });
 
-
+// 路由
 require('./route/routes')(app);
 
 // catch 404 and forward to error handler

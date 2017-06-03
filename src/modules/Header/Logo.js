@@ -2,6 +2,12 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import styles from './Logo.css'
 
+/**
+ * @description 头部左边的LOGO
+ * 
+ * @class Logo
+ * @extends {React.Component}
+ */
 class Logo extends React.Component {
     render() {
         return (

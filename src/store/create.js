@@ -11,6 +11,7 @@ const enhancer = compose(
   DevTools.instrument()
 )
 
+// redux 调试中间件
 export default function createStoreWithMiddleware(initialState){
   //注意：仅仅只有redux>=3.1.0支持第三个参数
   const store = createStore(reducer,initialState,enhancer);

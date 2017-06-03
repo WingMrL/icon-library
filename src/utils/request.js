@@ -20,6 +20,8 @@ function getBody(xhr) {
   }
 }
 
+
+// ant design 的Upload组件的customRequest方法
 // option {
 //  onProgress: (event: { percent: number }): void,
 //  onError: (event: Error, body?: Object): void,

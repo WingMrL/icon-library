@@ -11,22 +11,28 @@ import { Link } from 'react-router-dom';
 import config from '../../../config/config';
 import { Scrollbars } from 'react-custom-scrollbars';
 
+/**
+ * @description 搜索组件
+ * 
+ * @class SearchBar
+ * @extends {React.Component}
+ */
 class SearchBar extends React.Component {
     constructor(props) {
         super(props);
         this.timeout;
         this.currentValue;
-        onSelect: false;
+        this.onSelect = false; // 是否是选择导致搜索框发生变化，是的话，不触发fetch搜索建议
         this.state = {
             data: [],
             value: '',
         }
     }
 
-    componentWillMount() {
-        
-    }
-
+    /**
+     * @description fetch搜索建议
+     * @memberof SearchBar
+     */
     fetch = (value, callback) => {
         let self = this;
         if (this.timeout) {
@@ -59,6 +65,10 @@ class SearchBar extends React.Component {
         this.timeout = setTimeout(fake, 500);
     }
 
+    /**
+     * @description 当输入框focus的时候，显示搜索结果
+     * @memberof SearchBar
+     */
     handleSelectOnFocus = () => {
         if(this.state.value == '') {
             this.setState({
@@ -67,6 +77,11 @@ class SearchBar extends React.Component {
         }
     }
 
+    
+    /**
+     * @description 获取搜索结果
+     * @memberof SearchBar
+     */
     getSearchHistory = () => {
         let history = localStorage.getItem('searchHistory');
         if(history) {
@@ -77,11 +92,14 @@ class SearchBar extends React.Component {
         return history;
     }
 
+
     handleOnSelect = () => {
         this.onSelect = true;
     }
 
     handleSearchOnClick = (e) => {
+        
+        // 保存搜索结果
         let { value } = this.state;
         let history = this.getSearchHistory();
         let index = -1;
@@ -101,6 +119,8 @@ class SearchBar extends React.Component {
         history.unshift(value);
         history = JSON.stringify(history);
         localStorage.setItem('searchHistory', history);
+
+        // 
         if(this.props.onSearch) {
             this.props.onSearch(this.state.value);
         }
