@@ -1,0 +1,38 @@
+
+@ctHeight: 80px;
+@leftWidth: 100px;
+@totalWidth: 1100px;
+@rightWidth: @totalWidth - @leftWidth;
+
+.label-filter-container {
+    width: 1100px;
+    height: @ctHeight;
+    display: flex;
+    justify-content: flex-start;
+
+    .filter-name-div {
+        width: @leftWidth;
+        height: @ctHeight;
+
+        .filter-name {
+            display: block;
+            width: @leftWidth;
+            height: @ctHeight / 2;
+            line-height: @ctHeight / 2;
+            text-align: right;
+            font-size: 14px;
+            color: #666;
+        }
+    }
+
+    .filter-labels-div {
+        width: @rightWidth;
+        height: @ctHeight;
+        
+        .filter-labels {
+            width: @rightWidth;
+            height: @ctHeight / 2;
+            line-height: @ctHeight / 2;
+        }
+    }
+}

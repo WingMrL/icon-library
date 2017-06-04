@@ -98,7 +98,7 @@ exports.suggestion = function(req, res) {
 };
 
 exports.search = function(req, res) {
-    let { searchName, currentPage, numbersInPage } = req.body;
+    let { searchName, currentPage, numbersInPage, filterObj } = req.body;
     // 模糊搜索
     let reg = new RegExp(`${searchName}`, 'i');
     serier({
@@ -118,7 +118,7 @@ exports.search = function(req, res) {
                                 },
                                 populate: {
                                     path: 'labels',
-                                    select: 'labelName',
+                                    select: 'labelName classification',
                                     model: 'Label'
                                 }})
                             .exec()
@@ -152,7 +152,7 @@ exports.search = function(req, res) {
                                 },
                                 populate: {
                                     path: 'labels',
-                                    select: 'labelName',
+                                    select: 'labelName classification',
                                     model: 'Label'
                                 }})
                             .exec()
@@ -222,6 +222,21 @@ exports.search = function(req, res) {
 
         // 把模糊搜索到的图标添加到icons里
         icons = icons.concat(result.icons);
+
+        // 按标签进行过滤
+        if(filterObj && (filterObj.size || filterObj.platform)) {
+            icons = icons.filter(function(icon) {
+                let returnFlag = false;
+                icon.labels.forEach(function(label) {
+                    console.log(label);
+                    if((label.classification == '尺寸' && label.labelName == filterObj.size) 
+                        || (label.classification == '平台' && label.labelName == filterObj.platform)) {
+                        returnFlag = true;
+                    }
+                });
+                return returnFlag
+            });
+        }
 
         // 分页处理
         let iconsIdArr = icons.map(function(v) {

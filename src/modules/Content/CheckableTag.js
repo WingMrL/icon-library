@@ -33,7 +33,7 @@ class CheckableTag extends React.Component {
         if(prevState.checked != this.state.checked) {
             this.props.onChange(
                     this.state.checked, 
-                    this.props.children
+                    this.props.children,
                     );
         }
     }

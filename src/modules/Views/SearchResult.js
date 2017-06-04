@@ -8,6 +8,7 @@ import FooterContainer from '../Layout/FooterContainer';
 import Logo from '../Header/Logo';
 import SearchBar from '../Header/SearchBar';
 import GroupMenu from '../Menu/Menu';
+import LabelFilter from '../Content/LabelFilter';
 import ResultTitle from '../Menu/ResultTitle';
 import MenuBtnsContainer from '../Menu/MenuBtnsContainer';
 import MoreMenu from '../Menu/MoreMenu';
@@ -37,6 +38,7 @@ class SearchResult extends React.Component {
             numbersInPage: 32, //每页有多少条
             totalPages: 1, //总页数
             totalIcons: 0, //总icon数
+            filterObj: undefined, // 搜索过滤条件
         };
     }
 
@@ -52,12 +54,13 @@ class SearchResult extends React.Component {
     }
 
 
-    requestSearchResult = (searchName, currentPage, numbersInPage) => {
+    requestSearchResult = (searchName, currentPage, numbersInPage, filterObj) => {
         let self = this;
         let data = {
             searchName,
             currentPage,
             numbersInPage,
+            filterObj,
         }
         axios.post(`${config.serverHost}/api/search`, data)
             .then(function(result) {
@@ -83,7 +86,7 @@ class SearchResult extends React.Component {
             });
     }
 
-    handleSearchOnClick = (value) => {
+    handleSearchOnClick = (value, filterObj) => {
         let searchName = '';
         if(value) {
             searchName = value;
@@ -95,11 +98,12 @@ class SearchResult extends React.Component {
                 }
             });
             
-            this.onReflashPage(searchName);
+            this.onReflashPage(searchName, filterObj);
         }
         // console.log(searchName);
         this.setState({
-            searchName
+            searchName,
+            filterObj
         });
     }
 
@@ -112,16 +116,16 @@ class SearchResult extends React.Component {
         });
     }
 
-    onReflashPage = (name) => {
+    onReflashPage = (name, filterObj) => {
         let { searchName, currentPage, numbersInPage } = this.state;
         if(name) {
             searchName = name;
         }
-        this.requestSearchResult(searchName, currentPage, numbersInPage);
+        this.requestSearchResult(searchName, currentPage, numbersInPage, filterObj);
     }
 
     render() {
-        let { searchName, currentPage, totalPages, numbersInPage, totalIcons } = this.state;
+        let { searchName, currentPage, totalPages, numbersInPage, totalIcons, filterObj } = this.state;
         let { history } = this.props;
         // console.log(currentPage, totalPages, numbersInPage, totalIcons);
         let groupObj = this.state.searchResult.group;
@@ -138,6 +142,8 @@ class SearchResult extends React.Component {
                         icons={groupObj.icons}
                         />;
         }
+
+        let resetFilterFlag = filterObj ? false : true;
         
         return (
             <LayoutMain>
@@ -162,6 +168,10 @@ class SearchResult extends React.Component {
                                 <MoreMenu reflashPage={this.onReflashPage}/>
                             </MenuBtnsContainer>
                         </GroupMenu>
+                        <LabelFilter
+                            onSearch={this.handleSearchOnClick}
+                            resetFilterFlag={resetFilterFlag}
+                            ></LabelFilter>
                         <div className={`group-container`}>
                             {group}
                         </div>
