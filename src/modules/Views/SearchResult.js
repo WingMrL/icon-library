@@ -165,7 +165,10 @@ class SearchResult extends React.Component {
                         <div className={`group-container`}>
                             {group}
                         </div>
-                        <InnerGroupIcon></InnerGroupIcon>
+                        <InnerGroupIcon 
+                            history={history}
+                            onSearch={this.handleSearchOnClick}
+                            ></InnerGroupIcon>
                         <IconPagination 
                             size="small"
                             currentPage={currentPage}

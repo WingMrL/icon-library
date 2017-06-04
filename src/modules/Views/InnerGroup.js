@@ -152,7 +152,7 @@ class InnerGroup extends React.Component {
                             <MoreMenu reflashPage={this.willReflashPage}/>
                         </MenuBtnsContainer>
                     </GroupMenu>
-                    <InnerGroupIcon></InnerGroupIcon>
+                    <InnerGroupIcon history={history}></InnerGroupIcon>
                     <IconPagination 
                         size="small"
                         currentPage={currentPage}

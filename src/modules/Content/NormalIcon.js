@@ -41,7 +41,7 @@ class NormalIcon extends React.Component {
 
     render() {
         let { height, width, iconUrl, labels, fileName } = this.props.icon;
-        let { checked } = this.props;
+        let { checked, history, onSearch } = this.props;
         fileName = fileName.replace(/-timestamp\d+/, '');
         let iconName = fileName.replace(config.fileSuffixReg, '');
         let shortName = iconName;
@@ -92,7 +92,11 @@ class NormalIcon extends React.Component {
                         {shortName}
                     </Tooltip>
                 </div>
-                <Labels labels={labels}/>
+                <Labels 
+                    labels={labels}
+                    history={history}
+                    onSearch={onSearch}
+                    />
             </li>
         );
     }

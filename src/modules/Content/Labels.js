@@ -22,12 +22,26 @@ class Labels extends React.Component {
         return newArr;
     }
 
+    /**
+     * @description 标签被点击的时候，触发搜索
+     * @memberof Labels
+     */
+    handleTagOnClick = (labelName) => {
+        let { history, onSearch } = this.props;
+        // console.log(labelName);
+        if(onSearch) {
+            onSearch(labelName);
+        }
+        history.push(`/searchresult?search=${labelName}`);
+    }
+
     render() {
         let { labels } = this.props;
         let labelArr = this.removeRepetitive(labels);
         let labelList = labelArr.map((value) => {
             return  <Tag
                         key={value._id}
+                        onClick={this.handleTagOnClick.bind(this, value.labelName)}
                         >
                         {value.labelName}
                     </Tag>

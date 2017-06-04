@@ -10,7 +10,7 @@ class InnerGroupIcon extends React.Component {
     }
 
     render() {
-        let { icons } = this.props;
+        let { icons, history, onSearch } = this.props;
         
         let normalIconList;
         if(icons) {
@@ -18,6 +18,8 @@ class InnerGroupIcon extends React.Component {
                 return <NormalIcon 
                             key={value._id}
                             icon={value}
+                            history={history}
+                            onSearch={onSearch}
                             />
             });
         }
