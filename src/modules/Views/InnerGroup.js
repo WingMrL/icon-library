@@ -126,11 +126,14 @@ class InnerGroup extends React.Component {
 
     render() {
         let { group, currentPage, totalPages, numbersInPage, totalIcons } = this.state;
+        let { history } = this.props;
         return (
             <LayoutMain>
                 <HeaderContainer >
                     <Logo/>
-                    <SearchBar/>
+                    <SearchBar 
+                        history={history}
+                        />
                     <UploadBtn 
                         groupId={this.props.match.params.groupid}
                         reflashPage={this.willReflashPage}

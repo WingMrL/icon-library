@@ -248,6 +248,7 @@ class Index extends React.Component {
     }
 
     render() {
+        const { history } = this.props;
         const groupList = this.state.groups.map((value) => {
             return <Group 
                 key={value._id}
@@ -262,7 +263,9 @@ class Index extends React.Component {
             <LayoutMain>
                 <HeaderContainer>
                     <Logo/>
-                    <SearchBar/>
+                    <SearchBar 
+                        history={history}
+                        />
                 </HeaderContainer>
                 <ContentContainer>
                     {groupList}

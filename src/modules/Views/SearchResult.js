@@ -122,6 +122,7 @@ class SearchResult extends React.Component {
 
     render() {
         let { searchName, currentPage, totalPages, numbersInPage, totalIcons } = this.state;
+        let { history } = this.props;
         // console.log(currentPage, totalPages, numbersInPage, totalIcons);
         let groupObj = this.state.searchResult.group;
         let group;
@@ -142,7 +143,10 @@ class SearchResult extends React.Component {
             <LayoutMain>
                 <HeaderContainer >
                     <Logo/>
-                    <SearchBar onSearch={this.handleSearchOnClick}/>
+                    <SearchBar 
+                        onSearch={this.handleSearchOnClick}
+                        history={history}
+                        />
                 </HeaderContainer>
                 <ContentContainer >
                     { this.state.fileNotFound ?

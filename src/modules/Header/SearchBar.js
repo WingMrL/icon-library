@@ -92,6 +92,24 @@ class SearchBar extends React.Component {
         return history;
     }
 
+    /**
+     * @description 搜索input的keyUp事件
+     * @memberof SearchBar
+     */
+    handleSearchInputOnKeyUp = (e) => {
+        if(e.key == 'Enter') {
+            let { value } = this.state;
+            this.saveSearchHistory(value);
+            console.log(value);
+            if(this.props.onSearch) {
+                this.props.onSearch(value);
+            } 
+            let { history } = this.props;
+            history.push(`/searchresult?search=${value}`);
+            
+        }
+    }
+
 
     handleOnSelect = () => {
         this.onSelect = true;
@@ -99,8 +117,22 @@ class SearchBar extends React.Component {
 
     handleSearchOnClick = (e) => {
         
-        // 保存搜索结果
+        // 保存搜索纪录
         let { value } = this.state;
+        this.saveSearchHistory(value);
+
+        // 在搜索页进行搜索的时候触发
+        if(this.props.onSearch) {
+            this.props.onSearch(value);
+        }
+    }
+
+    /**
+     * @description 保存搜索纪录
+     * @param {String} value - 搜索词
+     * @memberof SearchBar
+     */
+    saveSearchHistory = (value) => {
         let history = this.getSearchHistory();
         let index = -1;
         history.forEach((v, i) => {
@@ -110,7 +142,7 @@ class SearchBar extends React.Component {
         });
         if(index == -1 || history.length == 0) {
             value = {
-                _id: `id_${Date.now().toString()}`,
+                _id: `id_${Date.now().toString()}`, // 这个id会作为react的key，所以要加上时间戳唯一化
                 text: value
             }
         } else {
@@ -119,11 +151,6 @@ class SearchBar extends React.Component {
         history.unshift(value);
         history = JSON.stringify(history);
         localStorage.setItem('searchHistory', history);
-
-        // 
-        if(this.props.onSearch) {
-            this.props.onSearch(this.state.value);
-        }
     }
 
     handleChange = (value) => {
@@ -141,7 +168,10 @@ class SearchBar extends React.Component {
             });
         const { value } = this.state;
         return (
-            <div style={{display: "flex", position: "relative",}}>
+            <div 
+                style={{display: "flex", position: "relative",}}
+                onKeyUp={this.handleSearchInputOnKeyUp}
+                >
                 <Select
                     mode="combobox"
                     value={value}
@@ -163,6 +193,7 @@ class SearchBar extends React.Component {
                         maxHeight: 224
                     }}
                     onSelect={this.handleOnSelect}
+                    
                     >
                     {options}
                 </Select>
